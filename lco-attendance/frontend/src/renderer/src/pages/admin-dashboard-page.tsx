@@ -1,19 +1,27 @@
+import {
+  AttendanceStatusChart,
+  BorrowsByCollegeChart,
+  TopOrganizationsChart,
+  WeeklyAttendanceChart,
+} from "@/components/admin/admin-charts"
+import { AdminActivityTable } from "@/components/admin/admin-activity-table"
+import { AdminKpiCards } from "@/components/admin/admin-kpi-cards"
 import { ModeToggle } from "@/components/mode-toggle"
 import { Button } from "@/components/ui/button"
+import {
+  ADMIN_KPIS,
+  ATTENDANCE_STATUS,
+  BORROWS_BY_COLLEGE,
+  RECENT_ACTIVITY,
+  TOP_ORGANIZATIONS,
+  WEEKLY_ATTENDANCE,
+} from "@/data/mock-admin"
 import type { AuthSession } from "@/data/mock-auth"
-import { cn } from "@/lib/utils"
 
 type AdminDashboardPageProps = {
   session: AuthSession
   onLogout: () => void
 }
-
-const placeholderStats = [
-  { label: "Members", value: "—" },
-  { label: "Sessions", value: "—" },
-  { label: "Borrows", value: "—" },
-  { label: "Returns", value: "—" },
-] as const
 
 export function AdminDashboardPage({
   session,
@@ -31,7 +39,7 @@ export function AdminDashboardPage({
               Admin Dashboard
             </h1>
             <p className="font-serif max-w-2xl text-lg text-foreground/80 italic">
-              Statistics overview — details coming soon.
+              Live overview from this session’s mock data.
             </p>
             <p className="text-sm text-muted-foreground">
               Signed in as{" "}
@@ -55,32 +63,19 @@ export function AdminDashboardPage({
           </div>
         </header>
 
-        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {placeholderStats.map((stat) => (
-            <article
-              key={stat.label}
-              className={cn("surface-card surface-card-hover px-5 py-5")}
-            >
-              <p className="text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
-                {stat.label}
-              </p>
-              <p className="mt-2 text-3xl font-black tracking-[-0.04em] text-foreground">
-                {stat.value}
-              </p>
-              <p className="mt-2 text-xs text-muted-foreground">Coming soon</p>
-            </article>
-          ))}
-        </section>
+        <AdminKpiCards kpis={ADMIN_KPIS} />
 
-        <section className="surface-card px-5 py-6">
-          <h2 className="text-lg font-bold tracking-[-0.03em]">
-            Dashboard notes
-          </h2>
-          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            This is a frontend scaffold. Detailed admin statistics and charts
-            will be added later.
-          </p>
-        </section>
+        <div className="grid items-stretch gap-6 lg:grid-cols-2">
+          <WeeklyAttendanceChart data={WEEKLY_ATTENDANCE} />
+          <BorrowsByCollegeChart data={BORROWS_BY_COLLEGE} />
+        </div>
+
+        <div className="grid items-stretch gap-6 lg:grid-cols-2">
+          <AttendanceStatusChart data={ATTENDANCE_STATUS} />
+          <TopOrganizationsChart data={TOP_ORGANIZATIONS} />
+        </div>
+
+        <AdminActivityTable rows={RECENT_ACTIVITY} />
       </main>
     </div>
   )
