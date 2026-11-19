@@ -49,9 +49,9 @@
   --font-family-sans: "Hanken Grotesk", Arial, sans-serif;
   --font-family-serif: "Fraunces", Georgia, serif;
 
-  /* Light theme — white canvas */
+  /* Light theme — bone white canvas */
   --radius: 0.15rem;
-  --background: #ffffff;
+  --background: #ede6d8;
   --foreground: var(--ink);
   --card: var(--paper);
   --card-foreground: var(--ink);
@@ -70,7 +70,7 @@
 }
 
 .dark {
-  --background: #121410;
+  --background: #1c1c1c;
   --foreground: var(--paper);
   --card: var(--panel);
   --card-foreground: var(--paper);
