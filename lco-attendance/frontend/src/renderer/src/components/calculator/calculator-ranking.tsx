@@ -59,7 +59,7 @@ function RankList({
   ranks: GroupRank[]
 }) {
   return (
-    <div className="min-h-0 flex-1">
+    <div>
       <div className="border-b border-border px-4 py-2.5">
         <p className="text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
           {title}
@@ -74,7 +74,7 @@ function RankList({
           {ranks.map((rank, index) => (
             <li
               key={rank.key}
-              className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-lime/55 dark:hover:bg-lime/15"
+              className="flex items-center gap-3 px-4 py-2.5 transition-colors hover:bg-lime/55 dark:hover:bg-lime/15"
             >
               <RankBadge index={index} />
               <div className="min-w-0 flex-1">
@@ -96,15 +96,15 @@ export function CalculatorRanking({
   organizationRanks,
 }: CalculatorRankingProps) {
   return (
-    <section className="flex h-full flex-col border border-border bg-card">
-      <div className="border-b border-border px-4 py-3">
+    <section className="flex h-full min-h-0 flex-col overflow-hidden border border-border bg-card">
+      <div className="shrink-0 border-b border-border px-4 py-3">
         <h2 className="text-lg font-bold tracking-[-0.03em]">Ranking</h2>
         <p className="mt-1 text-xs font-semibold tracking-[0.08em] text-muted-foreground uppercase">
           Top colleges & orgs
         </p>
       </div>
 
-      <div className="flex min-h-0 flex-1 flex-col">
+      <div className="min-h-0 flex-1 overflow-y-auto">
         <RankList title="Top colleges" ranks={collegeRanks} />
         <div className="border-t border-border" />
         <RankList title="Top organizations" ranks={organizationRanks} />

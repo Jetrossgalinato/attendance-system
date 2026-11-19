@@ -52,7 +52,7 @@ export function CalculatorPage({ onChangeMode }: CalculatorPageProps) {
   const coolingDown = now < cooldownUntil
 
   const summary = useMemo(() => summarizeCalculator(records), [records])
-  const collegeRanks = useMemo(() => rankByCollege(records, 5), [records])
+  const collegeRanks = useMemo(() => rankByCollege(records), [records])
   const organizationRanks = useMemo(
     () => rankByOrganization(records, 5),
     [records]

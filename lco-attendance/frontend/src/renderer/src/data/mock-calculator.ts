@@ -113,6 +113,15 @@ export function summarizeCalculator(
   return { outNow, borrowedToday, returnedToday, returnRate }
 }
 
+/** Fixed college set shown in ranking. */
+export const COLLEGE_ORDER = [
+  "CCIS",
+  "COFES",
+  "CED",
+  "CMNS",
+  "CEGS",
+] as const
+
 function rankByField(
   records: CalculatorRecord[],
   field: "college" | "organization",
@@ -132,11 +141,23 @@ function rankByField(
     .slice(0, limit)
 }
 
-export function rankByCollege(
-  records: CalculatorRecord[],
-  limit = 5
-): GroupRank[] {
-  return rankByField(records, "college", limit)
+export function rankByCollege(records: CalculatorRecord[]): GroupRank[] {
+  const counts = new Map<string, number>()
+  for (const college of COLLEGE_ORDER) {
+    counts.set(college, 0)
+  }
+
+  for (const record of records) {
+    if (record.type !== "Borrow") continue
+    if (!counts.has(record.college)) continue
+    counts.set(record.college, (counts.get(record.college) ?? 0) + 1)
+  }
+
+  return COLLEGE_ORDER.map((college) => ({
+    key: college,
+    label: college,
+    count: counts.get(college) ?? 0,
+  })).sort((a, b) => b.count - a.count || a.label.localeCompare(b.label))
 }
 
 export function rankByOrganization(
@@ -155,53 +176,173 @@ function seedTime(hour: number, minute: number, second = 0): string {
 /** Preloaded session rows for presentation (newest first). */
 export const SEED_CALCULATOR: CalculatorRecord[] = [
   {
-    id: "seed-c8",
+    id: "seed-c20",
+    memberId: "LCO-1014",
+    name: "Nina Ortega",
+    college: "CMNS",
+    organization: "Youth Fellowship",
+    type: "Borrow",
+    scannedAt: seedTime(11, 42, 18),
+    status: "Out",
+  },
+  {
+    id: "seed-c19",
+    memberId: "LCO-1011",
+    name: "Kai Domingo",
+    college: "CCIS",
+    organization: "Children Ministry",
+    type: "Borrow",
+    scannedAt: seedTime(11, 28, 4),
+    status: "Out",
+  },
+  {
+    id: "seed-c18",
+    memberId: "LCO-1005",
+    name: "Elena Garcia",
+    college: "CEGS",
+    organization: "Children Ministry",
+    type: "Return",
+    scannedAt: seedTime(11, 15, 51),
+    status: "Returned",
+  },
+  {
+    id: "seed-c17",
+    memberId: "LCO-1012",
+    name: "Lara Villanueva",
+    college: "COFES",
+    organization: "Tech Crew",
+    type: "Borrow",
+    scannedAt: seedTime(11, 3, 27),
+    status: "Out",
+  },
+  {
+    id: "seed-c16",
+    memberId: "LCO-1009",
+    name: "Isabel Navarro",
+    college: "CMNS",
+    organization: "Media Team",
+    type: "Borrow",
+    scannedAt: seedTime(10, 51, 9),
+    status: "Out",
+  },
+  {
+    id: "seed-c15",
+    memberId: "LCO-1013",
+    name: "Marco Dela Cruz",
+    college: "CED",
+    organization: "LCO Core",
+    type: "Borrow",
+    scannedAt: seedTime(10, 38, 44),
+    status: "Out",
+  },
+  {
+    id: "seed-c14",
+    memberId: "LCO-1002",
+    name: "Ben Santos",
+    college: "COFES",
+    organization: "Youth Fellowship",
+    type: "Return",
+    scannedAt: seedTime(10, 26, 12),
+    status: "Returned",
+  },
+  {
+    id: "seed-c13",
+    memberId: "LCO-1004",
+    name: "Diego Cruz",
+    college: "CMNS",
+    organization: "Usher Corps",
+    type: "Borrow",
+    scannedAt: seedTime(10, 14, 33),
+    status: "Out",
+  },
+  {
+    id: "seed-c12",
     memberId: "LCO-1008",
     name: "Hiro Tanaka",
     college: "CED",
     organization: "Youth Fellowship",
     type: "Borrow",
-    scannedAt: seedTime(10, 14, 22),
+    scannedAt: seedTime(10, 2, 18),
     status: "Out",
   },
   {
-    id: "seed-c7",
+    id: "seed-c11",
+    memberId: "LCO-1005",
+    name: "Elena Garcia",
+    college: "CEGS",
+    organization: "Children Ministry",
+    type: "Borrow",
+    scannedAt: seedTime(9, 51, 7),
+    status: "Out",
+  },
+  {
+    id: "seed-c10",
     memberId: "LCO-1003",
     name: "Carla Mendoza",
     college: "CED",
     organization: "Media Team",
     type: "Return",
-    scannedAt: seedTime(10, 2, 8),
+    scannedAt: seedTime(9, 40, 55),
     status: "Returned",
   },
   {
-    id: "seed-c6",
+    id: "seed-c9",
     memberId: "LCO-1001",
     name: "Ana Reyes",
     college: "CCIS",
     organization: "LCO Core",
     type: "Borrow",
-    scannedAt: seedTime(9, 48, 41),
+    scannedAt: seedTime(9, 28, 41),
     status: "Out",
   },
   {
-    id: "seed-c5",
+    id: "seed-c8",
     memberId: "LCO-1006",
     name: "Felix Ramos",
     college: "CCIS",
     organization: "Tech Crew",
     type: "Borrow",
-    scannedAt: seedTime(9, 31, 15),
+    scannedAt: seedTime(9, 16, 22),
     status: "Out",
   },
   {
-    id: "seed-c4",
+    id: "seed-c7",
+    memberId: "LCO-1002",
+    name: "Ben Santos",
+    college: "COFES",
+    organization: "Youth Fellowship",
+    type: "Borrow",
+    scannedAt: seedTime(9, 5, 14),
+    status: "Out",
+  },
+  {
+    id: "seed-c6",
     memberId: "LCO-1003",
     name: "Carla Mendoza",
     college: "CED",
     organization: "Media Team",
     type: "Borrow",
-    scannedAt: seedTime(9, 12, 3),
+    scannedAt: seedTime(8, 54, 3),
+    status: "Out",
+  },
+  {
+    id: "seed-c5",
+    memberId: "LCO-1010",
+    name: "Jonas Lim",
+    college: "CEGS",
+    organization: "Usher Corps",
+    type: "Return",
+    scannedAt: seedTime(8, 42, 47),
+    status: "Returned",
+  },
+  {
+    id: "seed-c4",
+    memberId: "LCO-1007",
+    name: "Gina Lopez",
+    college: "COFES",
+    organization: "LCO Core",
+    type: "Borrow",
+    scannedAt: seedTime(8, 31, 19),
     status: "Out",
   },
   {
@@ -210,28 +351,28 @@ export const SEED_CALCULATOR: CalculatorRecord[] = [
     name: "Jonas Lim",
     college: "CEGS",
     organization: "Usher Corps",
-    type: "Return",
-    scannedAt: seedTime(8, 55, 47),
-    status: "Returned",
-  },
-  {
-    id: "seed-c2",
-    memberId: "LCO-1007",
-    name: "Gina Lopez",
-    college: "COFES",
-    organization: "LCO Core",
     type: "Borrow",
-    scannedAt: seedTime(8, 41, 19),
+    scannedAt: seedTime(8, 22, 5),
     status: "Out",
   },
   {
+    id: "seed-c2",
+    memberId: "LCO-1009",
+    name: "Isabel Navarro",
+    college: "CMNS",
+    organization: "Media Team",
+    type: "Return",
+    scannedAt: seedTime(8, 11, 38),
+    status: "Returned",
+  },
+  {
     id: "seed-c1",
-    memberId: "LCO-1010",
-    name: "Jonas Lim",
-    college: "CEGS",
-    organization: "Usher Corps",
+    memberId: "LCO-1009",
+    name: "Isabel Navarro",
+    college: "CMNS",
+    organization: "Media Team",
     type: "Borrow",
-    scannedAt: seedTime(8, 22, 5),
+    scannedAt: seedTime(8, 2, 11),
     status: "Out",
   },
 ]
