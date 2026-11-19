@@ -132,3 +132,50 @@ h3 {
   white-space: nowrap;
   border-width: 0;
 }
+
+/* html5-qrcode: fill panel, cover crop, hide duplicate chrome */
+.qr-scanner-viewport {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: #111;
+}
+
+.qr-scanner-viewport video {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transform: none !important;
+}
+
+.qr-scanner-viewport canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.qr-scanner-viewport img {
+  display: none !important;
+}
+
+.qr-scanner-viewport > div,
+.qr-scanner-viewport [id$="__scan_region"] {
+  position: relative !important;
+  height: 100% !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+}
+
+.qr-scanner-viewport [id$="__dashboard_section"],
+.qr-scanner-viewport [id$="__header_message"],
+.qr-scanner-viewport [id$="__status_span"],
+.qr-scanner-viewport [id$="__dashboard_section_csr"],
+.qr-scanner-viewport [id$="__dashboard_section_swaplink"] {
+  display: none !important;
+}

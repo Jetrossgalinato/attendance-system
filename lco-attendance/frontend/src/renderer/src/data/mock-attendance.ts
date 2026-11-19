@@ -1,12 +1,16 @@
 import { findMemberById, type Member } from "./mock-members"
 
 export type AttendanceStatus = "Present" | "Late"
+export type AttendanceType = "Time In" | "Time Out"
+
+export const SCAN_COOLDOWN_MS = 1500
 
 export type AttendanceRecord = {
   id: string
   memberId: string
   name: string
   department: string
+  type: AttendanceType
   scannedAt: string
   status: AttendanceStatus
 }
@@ -53,6 +57,7 @@ export function formatScanTime(iso: string): string {
 
 export function recordFromMember(
   member: Member,
+  type: AttendanceType,
   scannedAt: Date = new Date()
 ): AttendanceRecord {
   return {
@@ -60,6 +65,7 @@ export function recordFromMember(
     memberId: member.id,
     name: member.name,
     department: member.department,
+    type,
     scannedAt: scannedAt.toISOString(),
     status: getAttendanceStatus(scannedAt),
   }
@@ -134,6 +140,7 @@ export const SEED_ATTENDANCE: AttendanceRecord[] = [
     memberId: "LCO-1008",
     name: "Hiro Tanaka",
     department: "Youth",
+    type: "Time In",
     scannedAt: seedTime(9, 12, 41),
     status: "Late",
   },
@@ -142,6 +149,7 @@ export const SEED_ATTENDANCE: AttendanceRecord[] = [
     memberId: "LCO-1004",
     name: "Diego Cruz",
     department: "Ushering",
+    type: "Time In",
     scannedAt: seedTime(9, 5, 18),
     status: "Late",
   },
@@ -150,6 +158,7 @@ export const SEED_ATTENDANCE: AttendanceRecord[] = [
     memberId: "LCO-1012",
     name: "Lara Villanueva",
     department: "Tech",
+    type: "Time Out",
     scannedAt: seedTime(8, 58, 3),
     status: "Present",
   },
@@ -158,6 +167,7 @@ export const SEED_ATTENDANCE: AttendanceRecord[] = [
     memberId: "LCO-1001",
     name: "Ana Reyes",
     department: "Worship",
+    type: "Time In",
     scannedAt: seedTime(8, 51, 27),
     status: "Present",
   },
@@ -166,6 +176,7 @@ export const SEED_ATTENDANCE: AttendanceRecord[] = [
     memberId: "LCO-1006",
     name: "Felix Ramos",
     department: "Tech",
+    type: "Time In",
     scannedAt: seedTime(8, 47, 9),
     status: "Present",
   },
@@ -174,6 +185,7 @@ export const SEED_ATTENDANCE: AttendanceRecord[] = [
     memberId: "LCO-1003",
     name: "Carla Mendoza",
     department: "Media",
+    type: "Time In",
     scannedAt: seedTime(8, 42, 55),
     status: "Present",
   },
@@ -182,6 +194,7 @@ export const SEED_ATTENDANCE: AttendanceRecord[] = [
     memberId: "LCO-1010",
     name: "Jonas Lim",
     department: "Ushering",
+    type: "Time Out",
     scannedAt: seedTime(8, 36, 14),
     status: "Present",
   },
@@ -190,6 +203,7 @@ export const SEED_ATTENDANCE: AttendanceRecord[] = [
     memberId: "LCO-1005",
     name: "Elena Garcia",
     department: "Children",
+    type: "Time In",
     scannedAt: seedTime(8, 29, 2),
     status: "Present",
   },
@@ -201,7 +215,8 @@ export type ScanResult =
 
 export function tryRecordScan(
   rawId: string,
-  existing: AttendanceRecord[]
+  existing: AttendanceRecord[],
+  type: AttendanceType
 ): ScanResult {
   const trimmed = rawId.trim()
   if (!trimmed) {
@@ -218,15 +233,17 @@ export function tryRecordScan(
   }
 
   const alreadyRecorded = existing.some(
-    (record) => record.memberId.toUpperCase() === member.id.toUpperCase()
+    (record) =>
+      record.memberId.toUpperCase() === member.id.toUpperCase() &&
+      record.type === type
   )
   if (alreadyRecorded) {
     return {
       ok: false,
       reason: "duplicate",
-      message: `${member.name} is already recorded.`,
+      message: `${member.name} already has ${type} recorded.`,
     }
   }
 
-  return { ok: true, record: recordFromMember(member) }
+  return { ok: true, record: recordFromMember(member, type) }
 }

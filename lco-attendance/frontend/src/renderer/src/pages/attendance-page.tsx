@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import { AttendanceRanking } from "@/components/attendance/attendance-ranking"
 import { AttendanceSummaryCards } from "@/components/attendance/attendance-summary"
@@ -8,37 +8,65 @@ import { QrScanner } from "@/components/attendance/qr-scanner"
 import { ModeToggle } from "@/components/mode-toggle"
 import {
   rankAttendance,
+  SCAN_COOLDOWN_MS,
   SEED_ATTENDANCE,
   summarizeAttendance,
   tryRecordScan,
   type AttendanceRecord,
+  type AttendanceType,
 } from "@/data/mock-attendance"
 
 export function AttendancePage() {
   const [records, setRecords] = useState<AttendanceRecord[]>(SEED_ATTENDANCE)
+  const [scanType, setScanType] = useState<AttendanceType>("Time In")
   const [scanValue, setScanValue] = useState("")
   const [message, setMessage] = useState<string | null>(null)
   const [messageTone, setMessageTone] = useState<"error" | "success" | null>(
     null
   )
-  const [qrOpen, setQrOpen] = useState(false)
+  const [cooldownUntil, setCooldownUntil] = useState(0)
+  const [now, setNow] = useState(() => Date.now())
+
+  const scanTypeRef = useRef(scanType)
+  const cooldownUntilRef = useRef(cooldownUntil)
+
+  useEffect(() => {
+    scanTypeRef.current = scanType
+  }, [scanType])
+
+  useEffect(() => {
+    cooldownUntilRef.current = cooldownUntil
+  }, [cooldownUntil])
+
+  useEffect(() => {
+    if (cooldownUntil <= Date.now()) return
+    const id = window.setInterval(() => setNow(Date.now()), 200)
+    return () => window.clearInterval(id)
+  }, [cooldownUntil])
+
+  const coolingDown = now < cooldownUntil
 
   const summary = useMemo(() => summarizeAttendance(records), [records])
   const ranks = useMemo(() => rankAttendance(records), [records])
 
   const handleScan = useCallback((rawId: string) => {
+    if (Date.now() < cooldownUntilRef.current) {
+      return
+    }
+
     setRecords((current) => {
-      const result = tryRecordScan(rawId, current)
+      const result = tryRecordScan(rawId, current, scanTypeRef.current)
       if (!result.ok) {
         setMessage(result.message)
         setMessageTone("error")
         return current
       }
 
-      setMessage(`Recorded ${result.record.name}`)
+      setMessage(`Recorded ${result.record.name} · ${result.record.type}`)
       setMessageTone("success")
       setScanValue("")
-      setQrOpen(false)
+      setCooldownUntil(Date.now() + SCAN_COOLDOWN_MS)
+      setNow(Date.now())
       return [result.record, ...current]
     })
   }, [])
@@ -67,36 +95,36 @@ export function AttendancePage() {
             LCO Attendance
           </h1>
           <p className="font-serif max-w-2xl text-lg text-foreground/80 italic">
-            Scan member IDs or QR codes to record today’s attendance.
+            QR camera stays on — choose Time In or Time Out, then scan or type an
+            ID.
           </p>
         </header>
 
         <AttendanceSummaryCards summary={summary} />
 
-        <IdScanInput
-          value={scanValue}
-          message={message}
-          messageTone={messageTone}
-          onChange={setScanValue}
-          onSubmitId={handleScan}
-          onOpenQr={() => {
-            setMessage(null)
-            setMessageTone(null)
-            setQrOpen(true)
-          }}
-        />
+        <section className="grid h-auto overflow-hidden border border-border bg-card md:h-[280px] md:grid-cols-[minmax(280px,380px)_minmax(0,1fr)]">
+          <QrScanner
+            paused={coolingDown}
+            onScan={handleScan}
+            className="h-[240px] border-b border-border md:h-full md:border-r md:border-b-0"
+          />
+          <IdScanInput
+            value={scanValue}
+            scanType={scanType}
+            message={message}
+            messageTone={messageTone}
+            coolingDown={coolingDown}
+            onChange={setScanValue}
+            onScanTypeChange={setScanType}
+            onSubmitId={handleScan}
+          />
+        </section>
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
           <AttendanceTable records={records} />
           <AttendanceRanking ranks={ranks} />
         </div>
       </main>
-
-      <QrScanner
-        open={qrOpen}
-        onClose={() => setQrOpen(false)}
-        onScan={handleScan}
-      />
     </div>
   )
 }

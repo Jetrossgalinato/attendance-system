@@ -1,25 +1,32 @@
 import { useEffect, useRef, type FormEvent } from "react"
-import { ScanLine } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import type { AttendanceType } from "@/data/mock-attendance"
+import { cn } from "@/lib/utils"
 
 type IdScanInputProps = {
   value: string
+  scanType: AttendanceType
   message: string | null
   messageTone: "error" | "success" | null
+  coolingDown?: boolean
   onChange: (value: string) => void
+  onScanTypeChange: (type: AttendanceType) => void
   onSubmitId: (rawId: string) => void
-  onOpenQr: () => void
+  className?: string
 }
 
 export function IdScanInput({
   value,
+  scanType,
   message,
   messageTone,
+  coolingDown = false,
   onChange,
+  onScanTypeChange,
   onSubmitId,
-  onOpenQr,
+  className,
 }: IdScanInputProps) {
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -27,60 +34,87 @@ export function IdScanInput({
     inputRef.current?.focus()
   }, [])
 
+  useEffect(() => {
+    if (!coolingDown) {
+      inputRef.current?.focus()
+    }
+  }, [coolingDown])
+
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     onSubmitId(value)
   }
 
   return (
-    <section className="border border-border bg-card p-4">
-      <form
-        className="flex flex-col gap-3 md:flex-row md:items-end"
-        onSubmit={handleSubmit}
-      >
-        <label className="min-w-0 flex-1 space-y-2">
+    <div
+      className={cn(
+        "flex h-full min-h-0 flex-col justify-center gap-4 bg-card px-4 py-3",
+        className
+      )}
+    >
+      <div>
+        <p className="text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
+          Scan mode
+        </p>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {(["Time In", "Time Out"] as const).map((type) => {
+            const active = scanType === type
+            return (
+              <Button
+                key={type}
+                type="button"
+                variant={active ? "default" : "outline"}
+                className={cn(
+                  "cursor-pointer",
+                  active &&
+                    "ring-2 ring-ring ring-offset-2 ring-offset-background"
+                )}
+                aria-pressed={active}
+                onClick={() => onScanTypeChange(type)}
+              >
+                {type}
+              </Button>
+            )
+          })}
+        </div>
+      </div>
+
+      <form className="space-y-2" onSubmit={handleSubmit}>
+        <label className="block space-y-2">
           <span className="block text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
-            Scan member ID
+            Or enter member ID
           </span>
           <Input
             ref={inputRef}
             value={value}
             onChange={(event) => onChange(event.target.value)}
-            placeholder="Scan barcode or type LCO-1001"
+            placeholder="Hardware scanner or type LCO-1001, then Enter"
             autoComplete="off"
             spellCheck={false}
+            disabled={coolingDown}
             className="font-mono tracking-wide"
           />
         </label>
-
-        <div className="flex gap-2">
-          <Button type="submit" className="cursor-pointer">
-            Record
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="cursor-pointer"
-            onClick={onOpenQr}
-          >
-            <ScanLine />
-            Scan QR
-          </Button>
-        </div>
       </form>
 
-      {message && (
-        <p
-          className={
-            messageTone === "success"
-              ? "mt-3 text-sm font-medium text-deep-lime"
-              : "mt-3 text-sm font-medium text-destructive"
-          }
-          role="status"
-        >
-          {message}
-        </p>
-      )}
-    </section>
+      <div className="min-h-5">
+        {message ? (
+          <p
+            className={
+              messageTone === "success"
+                ? "text-sm font-medium text-deep-lime"
+                : "text-sm font-medium text-destructive"
+            }
+            role="status"
+          >
+            {message}
+          </p>
+        ) : (
+          <p className="text-xs text-muted-foreground">
+            Active mode: <span className="font-semibold">{scanType}</span>
+          </p>
+        )}
+      </div>
+    </div>
   )
 }

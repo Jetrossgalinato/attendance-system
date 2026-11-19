@@ -28,7 +28,7 @@ export function AttendanceTable({ records }: AttendanceTableProps) {
 
       {records.length === 0 ? (
         <p className="px-4 py-10 text-sm text-muted-foreground">
-          No scans yet. Enter a member ID or scan a QR code.
+          No scans yet. Use the camera or enter a member ID.
         </p>
       ) : (
         <Table>
@@ -37,7 +37,7 @@ export function AttendanceTable({ records }: AttendanceTableProps) {
               <TableHead>Time</TableHead>
               <TableHead>ID</TableHead>
               <TableHead>Name</TableHead>
-              <TableHead>Department</TableHead>
+              <TableHead>Type</TableHead>
               <TableHead>Status</TableHead>
             </TableRow>
           </TableHeader>
@@ -51,8 +51,17 @@ export function AttendanceTable({ records }: AttendanceTableProps) {
                   {record.memberId}
                 </TableCell>
                 <TableCell className="font-semibold">{record.name}</TableCell>
-                <TableCell className="text-muted-foreground">
-                  {record.department}
+                <TableCell>
+                  <span
+                    className={cn(
+                      "inline-flex border px-2 py-0.5 text-xs font-semibold tracking-wide uppercase",
+                      record.type === "Time In"
+                        ? "border-deep-lime bg-lime/30 text-foreground"
+                        : "border-border bg-muted text-foreground"
+                    )}
+                  >
+                    {record.type}
+                  </span>
                 </TableCell>
                 <TableCell>
                   <span
