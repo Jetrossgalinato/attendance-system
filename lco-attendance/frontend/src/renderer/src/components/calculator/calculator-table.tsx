@@ -17,7 +17,7 @@ import {
 } from "@/data/mock-calculator"
 import { cn } from "@/lib/utils"
 
-const PAGE_SIZE = 5
+const PAGE_SIZE = 10
 
 type CalculatorTableProps = {
   records: CalculatorRecord[]
