@@ -17,29 +17,54 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
+  --color-lime: var(--lime);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-warm: var(--warm);
+  --color-deep-lime: var(--deep-lime);
+  --color-panel: var(--panel);
+  --color-panel-muted: var(--panel-muted);
+  --font-sans: var(--font-family-sans);
+  --font-serif: var(--font-family-serif);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(0.985 0.01 95);
-  --foreground: oklch(0.22 0.02 250);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.22 0.02 250);
-  --primary: oklch(0.42 0.08 240);
-  --primary-foreground: oklch(0.98 0.01 95);
-  --secondary: oklch(0.94 0.01 95);
-  --secondary-foreground: oklch(0.28 0.02 250);
-  --muted: oklch(0.94 0.01 95);
-  --muted-foreground: oklch(0.5 0.02 250);
-  --accent: oklch(0.94 0.02 95);
-  --accent-foreground: oklch(0.28 0.02 250);
-  --destructive: oklch(0.55 0.2 25);
-  --border: oklch(0.88 0.01 95);
-  --input: oklch(0.88 0.01 95);
-  --ring: oklch(0.55 0.06 240);
+  /* Endcap palette */
+  --lime: #dce87a;
+  --acid: #dce87a;
+  --ink: #181a17;
+  --paper: #f2f0e7;
+  --muted-text: #5e6258;
+  --line: #bbbfb1;
+  --warm: #e7e2d5;
+  --deep-lime: #a4b342;
+  --panel: #24281f;
+  --panel-muted: #d4d9c6;
+
+  --font-family-sans: "Hanken Grotesk", Arial, sans-serif;
+  --font-family-serif: "Fraunces", Georgia, serif;
+
+  /* shadcn / app semantic tokens */
+  --radius: 0.15rem;
+  --background: var(--lime);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+  --secondary: var(--warm);
+  --secondary-foreground: var(--ink);
+  --muted: var(--warm);
+  --muted-foreground: var(--muted-text);
+  --accent: var(--deep-lime);
+  --accent-foreground: var(--ink);
+  --destructive: #9b2c2c;
+  --border: var(--ink);
+  --input: var(--line);
+  --ring: var(--ink);
 }
 
 * {
@@ -54,12 +79,20 @@ body,
 
 body {
   margin: 0;
-  font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background: radial-gradient(
-      ellipse at top,
-      oklch(0.96 0.02 95),
-      transparent 55%
-    ),
-    var(--background);
+  font-family: var(--font-family-sans);
+  background: var(--background);
   color: var(--foreground);
+  letter-spacing: -0.01em;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-family-sans);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.font-serif {
+  font-family: var(--font-family-serif);
 }
