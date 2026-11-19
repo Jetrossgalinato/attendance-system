@@ -1,5 +1,6 @@
 import { useState } from "react"
 
+import { AdminShell } from "@/components/admin/admin-shell"
 import { AlertProvider } from "@/components/alert-provider"
 import type { AuthSession } from "@/data/mock-auth"
 import { AdminDashboardPage } from "@/pages/admin-dashboard-page"
@@ -66,7 +67,9 @@ export default function App() {
       )
     } else {
       content = (
-        <AdminDashboardPage session={session} onLogout={handleLogout} />
+        <AdminShell session={session} onLogout={handleLogout}>
+          <AdminDashboardPage />
+        </AdminShell>
       )
     }
   }
