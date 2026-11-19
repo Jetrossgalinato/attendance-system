@@ -298,6 +298,29 @@ h3 {
   border-width: 0;
 }
 
+/* Top-center alert toast */
+.alert-toast-host {
+  perspective: 800px;
+}
+
+.alert-toast {
+  transform: translateY(-120%);
+  opacity: 0;
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 220ms ease;
+}
+
+.alert-toast-enter {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.alert-toast-exit {
+  transform: translateY(-120%);
+  opacity: 0;
+}
+
 /* html5-qrcode: fill panel, cover crop, hide duplicate chrome */
 .qr-scanner-viewport {
   position: relative;

@@ -18,9 +18,13 @@ import {
 
 type AttendancePageProps = {
   onChangeMode: () => void
+  onLoginClick: () => void
 }
 
-export function AttendancePage({ onChangeMode }: AttendancePageProps) {
+export function AttendancePage({
+  onChangeMode,
+  onLoginClick,
+}: AttendancePageProps) {
   const [records, setRecords] = useState<AttendanceRecord[]>(SEED_ATTENDANCE)
   const [scanType, setScanType] = useState<AttendanceType>("Time In")
   const [scanValue, setScanValue] = useState("")
@@ -100,7 +104,10 @@ export function AttendancePage({ onChangeMode }: AttendancePageProps) {
               an ID.
             </p>
           </div>
-          <AppHeaderActions onChangeMode={onChangeMode} />
+          <AppHeaderActions
+            onChangeMode={onChangeMode}
+            onLoginClick={onLoginClick}
+          />
         </header>
 
         <AttendanceSummaryCards summary={summary} />

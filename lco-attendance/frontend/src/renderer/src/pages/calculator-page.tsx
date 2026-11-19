@@ -19,9 +19,13 @@ import {
 
 type CalculatorPageProps = {
   onChangeMode: () => void
+  onLoginClick: () => void
 }
 
-export function CalculatorPage({ onChangeMode }: CalculatorPageProps) {
+export function CalculatorPage({
+  onChangeMode,
+  onLoginClick,
+}: CalculatorPageProps) {
   const [records, setRecords] = useState<CalculatorRecord[]>(SEED_CALCULATOR)
   const [scanType, setScanType] = useState<BorrowType>("Borrow")
   const [scanValue, setScanValue] = useState("")
@@ -105,7 +109,10 @@ export function CalculatorPage({ onChangeMode }: CalculatorPageProps) {
               borrower ID.
             </p>
           </div>
-          <AppHeaderActions onChangeMode={onChangeMode} />
+          <AppHeaderActions
+            onChangeMode={onChangeMode}
+            onLoginClick={onLoginClick}
+          />
         </header>
 
         <CalculatorSummaryCards summary={summary} />
