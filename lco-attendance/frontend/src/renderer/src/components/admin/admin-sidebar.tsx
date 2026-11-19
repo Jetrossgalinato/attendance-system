@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import type { TransitionEvent } from "react"
 import {
   Calculator,
   ChevronLeft,
@@ -17,11 +17,13 @@ import {
 } from "@/data/mock-auth"
 import { cn } from "@/lib/utils"
 
-const STORAGE_KEY = "lco-admin-sidebar-collapsed"
-
 type AdminSidebarProps = {
   session: AuthSession
   onLogout: () => void
+  collapsed: boolean
+  animating: boolean
+  onToggle: () => void
+  onWidthTransitionEnd: (event: TransitionEvent<HTMLElement>) => void
 }
 
 type NavItem = {
@@ -53,40 +55,27 @@ const NAV_ITEMS: NavItem[] = [
   },
 ]
 
-export function AdminSidebar({ session, onLogout }: AdminSidebarProps) {
-  const [collapsed, setCollapsed] = useState(false)
-
-  useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem(STORAGE_KEY)
-      if (stored === "1") setCollapsed(true)
-    } catch {
-      // Ignore storage errors in restricted environments.
-    }
-  }, [])
-
-  function toggleCollapsed() {
-    setCollapsed((current) => {
-      const next = !current
-      try {
-        window.localStorage.setItem(STORAGE_KEY, next ? "1" : "0")
-      } catch {
-        // Ignore storage errors.
-      }
-      return next
-    })
-  }
-
+export function AdminSidebar({
+  session,
+  onLogout,
+  collapsed,
+  animating,
+  onToggle,
+  onWidthTransitionEnd,
+}: AdminSidebarProps) {
   const displayName = getDisplayName(session.email)
   const initials = getInitials(session.email)
 
   return (
     <aside
       className={cn(
-        "sticky top-0 z-20 flex h-dvh shrink-0 flex-col self-start overflow-hidden border-r border-border/80 bg-card shadow-[var(--shadow-2)] transition-[width] duration-300 ease-out",
+        "admin-sidebar fixed inset-y-0 left-0 z-30 flex h-dvh flex-col overflow-hidden border-r border-border/80 bg-card shadow-[var(--shadow-2)]",
         "rounded-none rounded-r-2xl",
         collapsed ? "w-[72px]" : "w-[260px]"
       )}
+      data-collapsed={collapsed ? "true" : "false"}
+      data-animating={animating ? "true" : "false"}
+      onTransitionEnd={onWidthTransitionEnd}
     >
       <div
         className={cn(
@@ -94,20 +83,23 @@ export function AdminSidebar({ session, onLogout }: AdminSidebarProps) {
           collapsed ? "justify-center" : "justify-between gap-2"
         )}
       >
-        {!collapsed ? (
-          <div className="min-w-0">
-            <p className="truncate text-xs font-semibold tracking-[0.12em] text-muted-foreground uppercase">
-              LCO Admin
-            </p>
-          </div>
-        ) : null}
+        <div
+          className={cn(
+            "sidebar-copy min-w-0 overflow-hidden",
+            collapsed && "sidebar-copy-hidden"
+          )}
+        >
+          <p className="truncate text-xs font-semibold tracking-[0.12em] text-muted-foreground uppercase">
+            LCO Admin
+          </p>
+        </div>
         <Button
           type="button"
           variant="outline"
           size="sm"
           className="h-8 w-8 shrink-0 cursor-pointer rounded-full p-0"
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          onClick={toggleCollapsed}
+          onClick={onToggle}
         >
           {collapsed ? <ChevronRight /> : <ChevronLeft />}
         </Button>
@@ -125,14 +117,17 @@ export function AdminSidebar({ session, onLogout }: AdminSidebarProps) {
         >
           {initials}
         </div>
-        {!collapsed ? (
-          <div className="min-w-0">
-            <p className="truncate font-semibold tracking-tight">{displayName}</p>
-            <p className="truncate text-xs text-muted-foreground">
-              {session.email}
-            </p>
-          </div>
-        ) : null}
+        <div
+          className={cn(
+            "sidebar-copy min-w-0 overflow-hidden",
+            collapsed && "sidebar-copy-hidden"
+          )}
+        >
+          <p className="truncate font-semibold tracking-tight">{displayName}</p>
+          <p className="truncate text-xs text-muted-foreground">
+            {session.email}
+          </p>
+        </div>
       </div>
 
       <nav className="flex flex-1 flex-col gap-1.5 p-2.5" aria-label="Admin">
@@ -147,8 +142,8 @@ export function AdminSidebar({ session, onLogout }: AdminSidebarProps) {
               aria-current={item.active ? "page" : undefined}
               aria-disabled={item.disabled || undefined}
               className={cn(
-                "relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-sm tracking-tight transition-colors",
-                collapsed && "justify-center px-2",
+                "relative flex items-center overflow-hidden rounded-xl py-2.5 text-sm tracking-tight",
+                collapsed ? "justify-center gap-0 px-2" : "gap-3 px-3",
                 item.active &&
                   "bg-lime/20 font-bold text-foreground before:absolute before:inset-y-1.5 before:left-0 before:w-1 before:rounded-full before:bg-lime",
                 !item.active &&
@@ -162,7 +157,14 @@ export function AdminSidebar({ session, onLogout }: AdminSidebarProps) {
                 className="size-4 shrink-0"
                 strokeWidth={item.active ? 2.5 : 2.25}
               />
-              {!collapsed ? <span className="truncate">{item.label}</span> : null}
+              <span
+                className={cn(
+                  "sidebar-copy truncate",
+                  collapsed && "sidebar-copy-hidden"
+                )}
+              >
+                {item.label}
+              </span>
             </button>
           )
         })}
@@ -180,11 +182,14 @@ export function AdminSidebar({ session, onLogout }: AdminSidebarProps) {
             collapsed ? "justify-center" : "items-center justify-between gap-2"
           )}
         >
-          {!collapsed ? (
-            <span className="px-1 text-xs font-semibold tracking-[0.08em] text-muted-foreground uppercase">
-              Theme
-            </span>
-          ) : null}
+          <span
+            className={cn(
+              "sidebar-copy px-1 text-xs font-semibold tracking-[0.08em] text-muted-foreground uppercase",
+              collapsed && "sidebar-copy-hidden"
+            )}
+          >
+            Theme
+          </span>
           <ModeToggle />
         </div>
         <Button
@@ -200,7 +205,11 @@ export function AdminSidebar({ session, onLogout }: AdminSidebarProps) {
           onClick={onLogout}
         >
           <LogOut />
-          {!collapsed ? "Logout" : null}
+          <span
+            className={cn("sidebar-copy", collapsed && "sidebar-copy-hidden")}
+          >
+            Logout
+          </span>
         </Button>
       </div>
     </aside>

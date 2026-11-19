@@ -286,6 +286,49 @@ h3 {
   padding: 0.35rem;
 }
 
+/* Admin sidebar — fixed rail; width anim only (no main reflow per frame) */
+.admin-sidebar {
+  transition: width 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  contain: layout paint;
+}
+
+.sidebar-copy {
+  display: inline-block;
+  max-width: 11rem;
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 160ms ease,
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sidebar-copy-hidden {
+  max-width: 0;
+  opacity: 0;
+  transform: translateX(-4px);
+  pointer-events: none;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.admin-sidebar[data-collapsed="true"] .sidebar-copy {
+  transition:
+    opacity 120ms ease,
+    transform 140ms ease;
+}
+
+.admin-sidebar[data-collapsed="false"] .sidebar-copy {
+  transition:
+    opacity 180ms ease 90ms,
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1) 60ms;
+}
+
+/* Freeze chart resize work while the rail animates */
+.admin-main-animating .recharts-responsive-container,
+.admin-main-animating .recharts-wrapper {
+  pointer-events: none;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
