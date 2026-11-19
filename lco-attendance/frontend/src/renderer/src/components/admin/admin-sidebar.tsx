@@ -5,6 +5,7 @@ import {
   LogOut,
 } from "lucide-react"
 
+import { useAlert } from "@/components/alert-provider"
 import { ModeToggle } from "@/components/mode-toggle"
 import {
   Sidebar,
@@ -63,8 +64,18 @@ export function AdminSidebar({
   onNavigate,
   onLogout,
 }: AdminSidebarProps) {
+  const { showAlert } = useAlert()
   const displayName = getDisplayName(session.email)
   const initials = getInitials(session.email)
+
+  function handleLogout() {
+    showAlert({
+      tone: "success",
+      title: "Signed out",
+      message: "You have been logged out of LCO Admin.",
+    })
+    onLogout()
+  }
 
   return (
     <Sidebar
@@ -140,7 +151,7 @@ export function AdminSidebar({
             <SidebarMenuButton
               type="button"
               tooltip="Logout"
-              onClick={onLogout}
+              onClick={handleLogout}
               className="h-9 cursor-pointer rounded-xl border border-border bg-card/85 font-semibold shadow-[var(--shadow-1)] hover:bg-muted"
             >
               <LogOut />
