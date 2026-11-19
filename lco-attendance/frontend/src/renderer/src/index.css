@@ -75,13 +75,14 @@
   --card: var(--panel);
   --card-foreground: var(--paper);
   --primary: var(--lime);
-  --primary-foreground: var(--ink);
+  /* Keep button label dark on lime — do not use --ink (remapped light in dark). */
+  --primary-foreground: #181a17;
   --secondary: #1c1f18;
   --secondary-foreground: var(--paper);
   --muted: #1c1f18;
   --muted-foreground: var(--panel-muted);
   --accent: var(--deep-lime);
-  --accent-foreground: var(--ink);
+  --accent-foreground: #181a17;
   --destructive: #ef9a9a;
   --border: var(--lime);
   --input: #3a3f34;
