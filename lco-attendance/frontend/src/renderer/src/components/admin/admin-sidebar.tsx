@@ -24,18 +24,19 @@ import {
   type AuthSession,
 } from "@/data/mock-auth"
 import { cn } from "@/lib/utils"
+import type { AdminPage } from "@/types/admin"
 
 type AdminSidebarProps = {
   session: AuthSession
+  activePage: AdminPage
+  onNavigate: (page: AdminPage) => void
   onLogout: () => void
 }
 
 type NavItem = {
-  id: string
+  id: AdminPage
   label: string
   icon: typeof LayoutDashboard
-  active?: boolean
-  disabled?: boolean
 }
 
 const NAV_ITEMS: NavItem[] = [
@@ -43,23 +44,25 @@ const NAV_ITEMS: NavItem[] = [
     id: "dashboard",
     label: "Dashboard",
     icon: LayoutDashboard,
-    active: true,
   },
   {
     id: "attendance",
     label: "Attendance Monitoring",
     icon: ClipboardCheck,
-    disabled: true,
   },
   {
     id: "borrowing",
     label: "Borrowing Monitoring",
     icon: Calculator,
-    disabled: true,
   },
 ]
 
-export function AdminSidebar({ session, onLogout }: AdminSidebarProps) {
+export function AdminSidebar({
+  session,
+  activePage,
+  onNavigate,
+  onLogout,
+}: AdminSidebarProps) {
   const displayName = getDisplayName(session.email)
   const initials = getInitials(session.email)
 
@@ -99,22 +102,22 @@ export function AdminSidebar({ session, onLogout }: AdminSidebarProps) {
             <SidebarMenu className="gap-1.5">
               {NAV_ITEMS.map((item) => {
                 const Icon = item.icon
+                const active = activePage === item.id
                 return (
                   <SidebarMenuItem key={item.id}>
                     <SidebarMenuButton
                       type="button"
-                      isActive={Boolean(item.active)}
-                      disabled={item.disabled}
-                      tooltip={item.disabled ? "Coming soon" : item.label}
-                      aria-current={item.active ? "page" : undefined}
+                      isActive={active}
+                      tooltip={item.label}
+                      aria-current={active ? "page" : undefined}
+                      onClick={() => onNavigate(item.id)}
                       className={cn(
-                        "h-auto rounded-xl py-2.5 font-semibold tracking-tight",
-                        item.active &&
-                          "relative bg-lime/20 font-bold text-foreground before:absolute before:inset-y-1.5 before:left-0 before:w-1 before:rounded-full before:bg-lime data-[active=true]:bg-lime/20 data-[active=true]:font-bold data-[active=true]:text-foreground",
-                        item.disabled && "opacity-45"
+                        "h-auto cursor-pointer rounded-xl py-2.5 font-semibold tracking-tight",
+                        active &&
+                          "relative bg-lime/20 font-bold text-foreground before:absolute before:inset-y-1.5 before:left-0 before:w-1 before:rounded-full before:bg-lime data-[active=true]:bg-lime/20 data-[active=true]:font-bold data-[active=true]:text-foreground"
                       )}
                     >
-                      <Icon strokeWidth={item.active ? 2.5 : 2.25} />
+                      <Icon strokeWidth={active ? 2.5 : 2.25} />
                       <span>{item.label}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

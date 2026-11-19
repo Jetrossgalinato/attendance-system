@@ -3,16 +3,25 @@ import { useCallback, useEffect, useState, type ReactNode } from "react"
 import { AdminSidebar } from "@/components/admin/admin-sidebar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import type { AuthSession } from "@/data/mock-auth"
+import type { AdminPage } from "@/types/admin"
 
 const STORAGE_KEY = "lco-admin-sidebar-collapsed"
 
 type AdminShellProps = {
   session: AuthSession
+  activePage: AdminPage
+  onNavigate: (page: AdminPage) => void
   onLogout: () => void
   children: ReactNode
 }
 
-export function AdminShell({ session, onLogout, children }: AdminShellProps) {
+export function AdminShell({
+  session,
+  activePage,
+  onNavigate,
+  onLogout,
+  children,
+}: AdminShellProps) {
   const [open, setOpen] = useState(true)
 
   useEffect(() => {
@@ -40,7 +49,12 @@ export function AdminShell({ session, onLogout, children }: AdminShellProps) {
         onOpenChange={handleOpenChange}
         className="relative z-[1] min-h-dvh"
       >
-        <AdminSidebar session={session} onLogout={onLogout} />
+        <AdminSidebar
+          session={session}
+          activePage={activePage}
+          onNavigate={onNavigate}
+          onLogout={onLogout}
+        />
         <SidebarInset className="min-h-dvh min-w-0 overflow-y-auto bg-transparent">
           <div className="px-4 py-6 sm:px-6 md:px-8 md:py-8">{children}</div>
         </SidebarInset>
