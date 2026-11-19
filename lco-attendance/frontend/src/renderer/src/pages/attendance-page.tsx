@@ -81,23 +81,22 @@ export function AttendancePage() {
   }, [])
 
   return (
-    <div className="relative min-h-full bg-background text-foreground">
-      <div className="absolute top-4 right-4 z-10">
-        <ModeToggle />
-      </div>
-
-      <main className="mx-auto flex min-h-full max-w-7xl flex-col gap-6 px-6 py-8 pr-20 md:px-8">
-        <header className="space-y-2">
-          <p className="text-xs font-semibold tracking-[0.12em] text-muted-foreground uppercase">
-            Session · {sessionLabel} · Live
-          </p>
-          <h1 className="text-4xl font-black tracking-[-0.05em] text-foreground md:text-5xl">
-            LCO Attendance
-          </h1>
-          <p className="font-serif max-w-2xl text-lg text-foreground/80 italic">
-            QR camera stays on — choose Time In or Time Out, then scan or type an
-            ID.
-          </p>
+    <div className="min-h-full bg-background text-foreground">
+      <main className="mx-auto flex min-h-full max-w-7xl flex-col gap-6 px-6 py-8 md:px-8">
+        <header className="flex items-start justify-between gap-4">
+          <div className="min-w-0 space-y-2">
+            <p className="text-xs font-semibold tracking-[0.12em] text-muted-foreground uppercase">
+              Session · {sessionLabel} · Live
+            </p>
+            <h1 className="text-4xl font-black tracking-[-0.05em] text-foreground md:text-5xl">
+              LCO Attendance
+            </h1>
+            <p className="font-serif max-w-2xl text-lg text-foreground/80 italic">
+              QR camera stays on — choose Time In or Time Out, then scan or type
+              an ID.
+            </p>
+          </div>
+          <ModeToggle />
         </header>
 
         <AttendanceSummaryCards summary={summary} />
