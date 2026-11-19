@@ -30,6 +30,14 @@ const GRID_STROKE = "var(--border)"
 const LIME = "#dce87a"
 const INK_MUTED = "#8e98a4"
 
+const COLLEGE_COLORS: Record<string, string> = {
+  CCIS: "#f5c78a", // pastel orange
+  COFES: "#9fd4a3", // pastel green
+  CED: "#9bb7f0", // pastel blue
+  CMNS: "#f0a8a8", // pastel red
+  CEGS: "#c4a484", // pastel brown
+}
+
 type ChartCardProps = {
   title: string
   subtitle: string
@@ -148,10 +156,16 @@ export function BorrowsByCollegeChart({ data }: { data: NamedCount[] }) {
           <Bar
             dataKey="count"
             name="Borrows"
-            fill={LIME}
             radius={[8, 8, 0, 0]}
             maxBarSize={42}
-          />
+          >
+            {data.map((entry) => (
+              <Cell
+                key={entry.name}
+                fill={COLLEGE_COLORS[entry.name] ?? LIME}
+              />
+            ))}
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </ChartCard>
