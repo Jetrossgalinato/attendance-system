@@ -1,14 +1,28 @@
-import { app, BrowserWindow, shell } from "electron"
+import { app, BrowserWindow, session, shell } from "electron"
 import { join } from "node:path"
 
 const isDev = !app.isPackaged
 
+// Must run before ready: auto-accept camera/mic prompts (Electron has no visible bar).
+app.commandLine.appendSwitch("use-fake-ui-for-media-stream")
+app.commandLine.appendSwitch("enable-features", "WebRTCPipeWireCapturer")
+
+function allowMediaPermission(permission: string): boolean {
+  return (
+    permission === "media" ||
+    permission === "mediaKeySystem" ||
+    permission === "display-capture" ||
+    permission === "speaker-selection" ||
+    permission === "clipboard-sanitized-write"
+  )
+}
+
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
-    width: 1100,
-    height: 720,
-    minWidth: 800,
-    minHeight: 560,
+    width: 1280,
+    height: 800,
+    minWidth: 900,
+    minHeight: 640,
     show: false,
     autoHideMenuBar: true,
     webPreferences: {
@@ -36,6 +50,16 @@ function createWindow(): void {
 }
 
 app.whenReady().then(() => {
+  const ses = session.defaultSession
+
+  ses.setPermissionRequestHandler((_webContents, permission, callback) => {
+    callback(allowMediaPermission(permission))
+  })
+
+  ses.setPermissionCheckHandler((_webContents, permission) =>
+    allowMediaPermission(permission)
+  )
+
   createWindow()
 
   app.on("activate", () => {
