@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
+import { AppHeaderActions } from "@/components/app-header-actions"
 import { AttendanceRanking } from "@/components/attendance/attendance-ranking"
 import { AttendanceSummaryCards } from "@/components/attendance/attendance-summary"
 import { AttendanceTable } from "@/components/attendance/attendance-table"
 import { IdScanInput } from "@/components/attendance/id-scan-input"
 import { QrScanner } from "@/components/attendance/qr-scanner"
-import { ModeToggle } from "@/components/mode-toggle"
 import {
   rankAttendance,
   SCAN_COOLDOWN_MS,
@@ -16,7 +16,11 @@ import {
   type AttendanceType,
 } from "@/data/mock-attendance"
 
-export function AttendancePage() {
+type AttendancePageProps = {
+  onChangeMode: () => void
+}
+
+export function AttendancePage({ onChangeMode }: AttendancePageProps) {
   const [records, setRecords] = useState<AttendanceRecord[]>(SEED_ATTENDANCE)
   const [scanType, setScanType] = useState<AttendanceType>("Time In")
   const [scanValue, setScanValue] = useState("")
@@ -96,7 +100,7 @@ export function AttendancePage() {
               an ID.
             </p>
           </div>
-          <ModeToggle />
+          <AppHeaderActions onChangeMode={onChangeMode} />
         </header>
 
         <AttendanceSummaryCards summary={summary} />
