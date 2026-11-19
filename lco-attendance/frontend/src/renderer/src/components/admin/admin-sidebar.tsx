@@ -83,7 +83,8 @@ export function AdminSidebar({ session, onLogout }: AdminSidebarProps) {
   return (
     <aside
       className={cn(
-        "surface-card surface-elevated flex h-full shrink-0 flex-col overflow-hidden transition-[width] duration-300 ease-out",
+        "sticky top-0 z-20 flex h-dvh shrink-0 flex-col self-start overflow-hidden border-r border-border/80 bg-card shadow-[var(--shadow-2)] transition-[width] duration-300 ease-out",
+        "rounded-none rounded-r-2xl",
         collapsed ? "w-[72px]" : "w-[260px]"
       )}
     >
@@ -146,18 +147,21 @@ export function AdminSidebar({ session, onLogout }: AdminSidebarProps) {
               aria-current={item.active ? "page" : undefined}
               aria-disabled={item.disabled || undefined}
               className={cn(
-                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold tracking-tight transition-colors",
+                "relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-sm tracking-tight transition-colors",
                 collapsed && "justify-center px-2",
                 item.active &&
-                  "bg-lime/40 text-[#181a17] shadow-[var(--shadow-1)]",
+                  "bg-lime/20 font-bold text-foreground before:absolute before:inset-y-1.5 before:left-0 before:w-1 before:rounded-full before:bg-lime",
                 !item.active &&
                   !item.disabled &&
-                  "text-foreground hover:bg-muted",
+                  "font-semibold text-foreground hover:bg-muted",
                 item.disabled &&
-                  "cursor-not-allowed text-muted-foreground opacity-45"
+                  "cursor-not-allowed font-semibold text-muted-foreground opacity-45"
               )}
             >
-              <Icon className="size-4 shrink-0" strokeWidth={2.25} />
+              <Icon
+                className="size-4 shrink-0"
+                strokeWidth={item.active ? 2.5 : 2.25}
+              />
               {!collapsed ? <span className="truncate">{item.label}</span> : null}
             </button>
           )
