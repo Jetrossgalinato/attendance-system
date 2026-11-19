@@ -69,7 +69,7 @@ export function AttendanceRanking({ ranks }: AttendanceRankingProps) {
           {ranks.map((rank, index) => (
             <li
               key={rank.memberId}
-              className="flex items-center gap-3 px-4 py-3"
+              className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-lime/55 dark:hover:bg-lime/15"
             >
               <RankBadge index={index} />
               <div className="min-w-0 flex-1">
