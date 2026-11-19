@@ -88,8 +88,8 @@ export function AttendanceTable({ records }: AttendanceTableProps) {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-end gap-2 sm:gap-3">
-          <label className="space-y-1">
+        <div className="flex flex-wrap items-end gap-2">
+          <label className="w-fit space-y-1">
             <span className="block text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
               From
             </span>
@@ -98,10 +98,10 @@ export function AttendanceTable({ records }: AttendanceTableProps) {
               value={fromDate}
               max={toDate || undefined}
               onChange={(event) => setFromDate(event.target.value)}
-              className="h-9 w-[10.5rem] cursor-pointer"
+              className="block h-9 w-[9.5rem] cursor-pointer px-2"
             />
           </label>
-          <label className="space-y-1">
+          <label className="w-fit space-y-1">
             <span className="block text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
               To
             </span>
@@ -110,7 +110,7 @@ export function AttendanceTable({ records }: AttendanceTableProps) {
               value={toDate}
               min={fromDate || undefined}
               onChange={(event) => setToDate(event.target.value)}
-              className="h-9 w-[10.5rem] cursor-pointer"
+              className="block h-9 w-[9.5rem] cursor-pointer px-2"
             />
           </label>
           <Button
