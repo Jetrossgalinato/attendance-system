@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react"
+import { ChevronLeft } from "lucide-react"
 
 import { useAlert } from "@/components/alert-provider"
 import { ModeToggle } from "@/components/mode-toggle"
@@ -44,8 +45,8 @@ export function LoginPage({ onSuccess, onBack }: LoginPageProps) {
 
   return (
     <div className="app-shell text-foreground">
-      <main className="relative z-[1] mx-auto flex min-h-full max-w-lg flex-col px-6 py-10 md:px-8">
-        <div className="mb-8 flex items-center justify-between gap-3">
+      <div className="relative z-[1] flex min-h-dvh flex-col">
+        <header className="mx-auto flex w-full max-w-2xl items-center justify-between px-6 py-6 md:px-8">
           <Button
             type="button"
             variant="outline"
@@ -53,63 +54,66 @@ export function LoginPage({ onSuccess, onBack }: LoginPageProps) {
             className="cursor-pointer"
             onClick={onBack}
           >
+            <ChevronLeft />
             Back
           </Button>
           <ModeToggle />
-        </div>
+        </header>
 
-        <section className="surface-card surface-elevated mx-auto w-full px-6 py-8 sm:px-8">
-          <p className="text-xs font-semibold tracking-[0.12em] text-muted-foreground uppercase">
-            Admin access
-          </p>
-          <h1 className="mt-2 text-3xl font-black tracking-[-0.05em]">
-            Sign in
-          </h1>
-          <p className="font-serif mt-2 text-base text-foreground/80 italic">
-            Enter your credentials to open the admin dashboard.
-          </p>
-
-          <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
-            <label className="block space-y-2">
-              <span className="block text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
-                Email
-              </span>
-              <Input
-                type="email"
-                autoComplete="username"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                placeholder={DEMO_EMAIL}
-              />
-            </label>
-
-            <label className="block space-y-2">
-              <span className="block text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
-                Password
-              </span>
-              <Input
-                type="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                placeholder="••••••••"
-              />
-            </label>
-
-            <Button type="submit" className="mt-2 w-full cursor-pointer">
+        <main className="flex flex-1 items-center justify-center px-6 pb-16 md:px-8">
+          <section className="surface-card surface-elevated w-full max-w-md px-7 py-8 sm:px-8 sm:py-9">
+            <p className="text-xs font-semibold tracking-[0.12em] text-muted-foreground uppercase">
+              Admin access
+            </p>
+            <h1 className="mt-2 text-3xl font-black tracking-[-0.05em]">
               Sign in
-            </Button>
-          </form>
+            </h1>
+            <p className="font-serif mt-2 text-base leading-relaxed text-foreground/80 italic">
+              Enter your credentials to open the admin dashboard.
+            </p>
 
-          <p className="mt-5 text-xs text-muted-foreground">
-            Demo hint:{" "}
-            <span className="font-mono text-foreground">
-              {DEMO_EMAIL} / {DEMO_PASSWORD}
-            </span>
-            . Any non-empty email and password will work for this mock.
-          </p>
-        </section>
-      </main>
+            <form className="mt-7 space-y-4" onSubmit={handleSubmit}>
+              <label className="block space-y-2">
+                <span className="block text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
+                  Email
+                </span>
+                <Input
+                  type="email"
+                  autoComplete="username"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  placeholder={DEMO_EMAIL}
+                />
+              </label>
+
+              <label className="block space-y-2">
+                <span className="block text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
+                  Password
+                </span>
+                <Input
+                  type="password"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  placeholder="••••••••"
+                />
+              </label>
+
+              <Button type="submit" className="mt-2 h-11 w-full cursor-pointer">
+                Sign in
+              </Button>
+            </form>
+
+            <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
+              Demo hint:{" "}
+              <span className="font-mono text-foreground">
+                {DEMO_EMAIL} / {DEMO_PASSWORD}
+              </span>
+              . Any non-empty email and password will work for this mock.
+            </p>
+          </section>
+        </main>
+      </div>
     </div>
   )
 }
