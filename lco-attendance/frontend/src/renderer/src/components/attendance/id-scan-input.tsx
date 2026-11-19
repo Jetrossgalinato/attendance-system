@@ -67,7 +67,7 @@ export function IdScanInput({
                 className={cn(
                   "cursor-pointer",
                   active &&
-                    "bg-lime text-[#181a17] shadow-sm hover:bg-lime hover:text-[#181a17] ring-2 ring-lime/60 ring-offset-2 ring-offset-background"
+                    "surface-active-lime bg-lime text-[#181a17] hover:bg-lime hover:text-[#181a17] ring-2 ring-lime/50 ring-offset-2 ring-offset-background"
                 )}
                 aria-pressed={active}
                 onClick={() => onScanTypeChange(type)}

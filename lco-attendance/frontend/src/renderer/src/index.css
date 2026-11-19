@@ -53,7 +53,7 @@
   --radius: 0.9rem;
   --background: #ede6d8;
   --foreground: var(--ink);
-  --card: #f7f3ea;
+  --card: #faf7f0;
   --card-foreground: var(--ink);
   --primary: var(--ink);
   --primary-foreground: #ffffff;
@@ -67,13 +67,53 @@
   --border: rgba(0, 0, 0, 0.08);
   --input: rgba(0, 0, 0, 0.1);
   --ring: rgba(0, 0, 0, 0.18);
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+
+  /* Depth elevation scale */
+  --shadow-1:
+    0 1px 1px rgba(0, 0, 0, 0.03),
+    0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-2:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 20px rgba(0, 0, 0, 0.07),
+    0 20px 40px rgba(0, 0, 0, 0.04);
+  --shadow-3:
+    0 2px 4px rgba(0, 0, 0, 0.05),
+    0 12px 28px rgba(0, 0, 0, 0.1),
+    0 28px 56px rgba(0, 0, 0, 0.06);
+  --shadow-hover:
+    0 4px 8px rgba(0, 0, 0, 0.06),
+    0 16px 36px rgba(0, 0, 0, 0.12),
+    0 32px 64px rgba(0, 0, 0, 0.08);
+  --shadow-inset:
+    inset 0 1px 2px rgba(0, 0, 0, 0.06),
+    inset 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-card: var(--shadow-2);
+  --glow-lime: 0 0 0 1px rgba(220, 232, 122, 0.35),
+    0 8px 24px rgba(164, 179, 66, 0.2);
+
+  --bg-atmosphere:
+    radial-gradient(
+      1200px 600px at 12% -10%,
+      rgba(255, 255, 255, 0.55),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 500px at 88% 8%,
+      rgba(220, 232, 122, 0.18),
+      transparent 55%
+    ),
+    radial-gradient(
+      800px 480px at 50% 100%,
+      rgba(0, 0, 0, 0.04),
+      transparent 50%
+    ),
+    var(--background);
 }
 
 .dark {
   --background: #1c1c1c;
   --foreground: #f5f5f7;
-  --card: #2a2a2a;
+  --card: #2c2c2e;
   --card-foreground: #f5f5f7;
   --primary: var(--lime);
   /* Keep button label dark on lime — do not use --ink (remapped light in dark). */
@@ -88,10 +128,49 @@
   --border: rgba(255, 255, 255, 0.1);
   --input: rgba(255, 255, 255, 0.12);
   --ring: rgba(220, 232, 122, 0.45);
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 28px rgba(0, 0, 0, 0.35);
+
+  --shadow-1:
+    0 1px 1px rgba(0, 0, 0, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-2:
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    0 12px 28px rgba(0, 0, 0, 0.45),
+    0 24px 48px rgba(0, 0, 0, 0.3);
+  --shadow-3:
+    0 4px 8px rgba(0, 0, 0, 0.45),
+    0 18px 40px rgba(0, 0, 0, 0.55),
+    0 36px 72px rgba(0, 0, 0, 0.35);
+  --shadow-hover:
+    0 6px 12px rgba(0, 0, 0, 0.5),
+    0 22px 48px rgba(0, 0, 0, 0.6);
+  --shadow-inset:
+    inset 0 1px 2px rgba(0, 0, 0, 0.55),
+    inset 0 3px 12px rgba(0, 0, 0, 0.35);
+  --shadow-card: var(--shadow-2);
+  --glow-lime: 0 0 0 1px rgba(220, 232, 122, 0.28),
+    0 10px 28px rgba(220, 232, 122, 0.12);
+
+  --bg-atmosphere:
+    radial-gradient(
+      1000px 520px at 10% -8%,
+      rgba(255, 255, 255, 0.05),
+      transparent 55%
+    ),
+    radial-gradient(
+      800px 480px at 90% 0%,
+      rgba(220, 232, 122, 0.08),
+      transparent 50%
+    ),
+    radial-gradient(
+      700px 420px at 50% 110%,
+      rgba(0, 0, 0, 0.45),
+      transparent 55%
+    ),
+    var(--background);
+
   --ink: #f5f5f7;
-  --paper: #2a2a2a;
-  --panel: #2a2a2a;
+  --paper: #2c2c2e;
+  --panel: #2c2c2e;
   --deep-lime: var(--lime);
   --warm: #333333;
 }
@@ -109,7 +188,8 @@ body,
 body {
   margin: 0;
   font-family: var(--font-family-sans);
-  background: var(--background);
+  background: var(--bg-atmosphere);
+  background-attachment: fixed;
   color: var(--foreground);
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
@@ -127,28 +207,83 @@ h3 {
   font-family: var(--font-family-serif);
 }
 
+/* Layer 0 — page shell */
+.app-shell {
+  position: relative;
+  isolation: isolate;
+  min-height: 100%;
+  background: transparent;
+}
+
+.app-shell::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--bg-atmosphere);
+}
+
+/* Elevation surfaces */
 .surface-card {
+  position: relative;
+  z-index: 1;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  background: var(--card);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--card) 92%, white 8%) 0%,
+    var(--card) 100%
+  );
   color: var(--card-foreground);
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-2);
   transition:
-    box-shadow 180ms ease,
-    transform 180ms ease;
+    box-shadow 200ms ease,
+    transform 200ms ease,
+    border-color 200ms ease;
+}
+
+.dark .surface-card {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--card) 88%, white 12%) 0%,
+    var(--card) 100%
+  );
+}
+
+.surface-elevated {
+  z-index: 2;
+  box-shadow: var(--shadow-3);
 }
 
 .surface-card-hover:hover {
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.05),
-    0 12px 32px rgba(0, 0, 0, 0.08);
-  transform: translateY(-1px);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
 }
 
-.dark .surface-card-hover:hover {
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.4),
-    0 14px 36px rgba(0, 0, 0, 0.45);
+.surface-inset {
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius-lg) - 4px);
+  background: color-mix(in srgb, var(--muted) 70%, transparent);
+  box-shadow: var(--shadow-inset);
+}
+
+.surface-chip {
+  box-shadow: var(--shadow-1);
+}
+
+.surface-active-lime {
+  box-shadow: var(--glow-lime);
+}
+
+.header-actions-bar {
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--card) 78%, transparent);
+  box-shadow: var(--shadow-1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0.35rem;
 }
 
 .sr-only {
@@ -171,6 +306,7 @@ h3 {
   overflow: hidden;
   background: #111;
   border-radius: calc(var(--radius-lg) - 2px);
+  box-shadow: var(--shadow-inset);
 }
 
 .qr-scanner-viewport video {

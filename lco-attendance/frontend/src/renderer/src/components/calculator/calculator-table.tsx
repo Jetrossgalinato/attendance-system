@@ -160,7 +160,7 @@ export function CalculatorTable({ records }: CalculatorTableProps) {
                     <TableCell>
                       <span
                         className={cn(
-                          "inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide uppercase",
+                          "surface-chip inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide uppercase",
                           record.type === "Borrow"
                             ? "bg-lime/40 text-foreground"
                             : "bg-muted text-foreground"
@@ -172,7 +172,7 @@ export function CalculatorTable({ records }: CalculatorTableProps) {
                     <TableCell>
                       <span
                         className={cn(
-                          "inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide uppercase",
+                          "surface-chip inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide uppercase",
                           record.status === "Out"
                             ? "bg-lime/40 text-foreground"
                             : "bg-muted text-foreground"

@@ -160,7 +160,7 @@ export function AttendanceTable({ records }: AttendanceTableProps) {
                     <TableCell>
                       <span
                         className={cn(
-                          "inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide uppercase",
+                          "surface-chip inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide uppercase",
                           record.type === "Time In"
                             ? "bg-lime/40 text-foreground"
                             : "bg-muted text-foreground"
@@ -172,7 +172,7 @@ export function AttendanceTable({ records }: AttendanceTableProps) {
                     <TableCell>
                       <span
                         className={cn(
-                          "inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide uppercase",
+                          "surface-chip inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide uppercase",
                           record.status === "Present"
                             ? "bg-lime/40 text-foreground"
                             : "bg-destructive/10 text-destructive"

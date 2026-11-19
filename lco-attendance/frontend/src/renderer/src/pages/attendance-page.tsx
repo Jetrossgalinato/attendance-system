@@ -85,8 +85,8 @@ export function AttendancePage({ onChangeMode }: AttendancePageProps) {
   }, [])
 
   return (
-    <div className="min-h-full bg-background text-foreground">
-      <main className="mx-auto flex min-h-full max-w-7xl flex-col gap-8 px-6 py-10 md:px-8">
+    <div className="app-shell text-foreground">
+      <main className="relative z-[1] mx-auto flex min-h-full max-w-7xl flex-col gap-8 px-6 py-10 md:px-8">
         <header className="flex items-start justify-between gap-4">
           <div className="min-w-0 space-y-2.5">
             <p className="text-xs font-semibold tracking-[0.12em] text-muted-foreground uppercase">
@@ -105,7 +105,7 @@ export function AttendancePage({ onChangeMode }: AttendancePageProps) {
 
         <AttendanceSummaryCards summary={summary} />
 
-        <section className="surface-card grid h-auto overflow-hidden md:h-[300px] md:grid-cols-[minmax(280px,380px)_minmax(0,1fr)]">
+        <section className="surface-card surface-elevated grid h-auto overflow-hidden md:h-[300px] md:grid-cols-[minmax(280px,380px)_minmax(0,1fr)]">
           <QrScanner
             paused={coolingDown}
             onScan={handleScan}

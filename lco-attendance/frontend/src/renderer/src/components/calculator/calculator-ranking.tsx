@@ -33,7 +33,7 @@ function RankBadge({ index }: { index: number }) {
     return (
       <span
         className={cn(
-          "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
+          "surface-chip flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
           podium.wrap
         )}
         aria-label={`${podium.label} trophy`}
@@ -45,7 +45,7 @@ function RankBadge({ index }: { index: number }) {
   }
 
   return (
-    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-black text-foreground">
+    <span className="surface-chip flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-black text-foreground">
       {index + 1}
     </span>
   )

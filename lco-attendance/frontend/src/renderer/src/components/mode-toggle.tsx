@@ -23,7 +23,7 @@ export function ModeToggle() {
       type="button"
       variant="outline"
       size="sm"
-      className="cursor-pointer"
+      className="cursor-pointer border-transparent bg-transparent shadow-none hover:bg-muted/80"
       aria-label={
         theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
       }

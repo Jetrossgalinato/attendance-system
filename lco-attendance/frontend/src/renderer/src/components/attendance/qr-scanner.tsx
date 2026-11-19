@@ -226,7 +226,7 @@ export function QrScanner({
         )}
       </div>
 
-      <div className="relative mx-4 mb-4 min-h-0 flex-1 overflow-hidden rounded-2xl bg-muted">
+      <div className="surface-inset relative mx-4 mb-4 min-h-0 flex-1 overflow-hidden rounded-2xl">
         <div
           ref={hostRef}
           id={elementId}
@@ -238,7 +238,7 @@ export function QrScanner({
           </p>
         )}
         {error && (
-          <div className="absolute inset-x-0 bottom-0 space-y-2 rounded-b-2xl bg-background/95 px-3 py-2">
+          <div className="absolute inset-x-0 bottom-0 space-y-2 rounded-b-2xl bg-card/95 px-3 py-2 backdrop-blur-md">
             <p className="text-xs font-medium text-destructive" role="alert">
               {error}
             </p>
