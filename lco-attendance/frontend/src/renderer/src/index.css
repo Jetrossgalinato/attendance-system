@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -47,24 +49,45 @@
   --font-family-sans: "Hanken Grotesk", Arial, sans-serif;
   --font-family-serif: "Fraunces", Georgia, serif;
 
-  /* shadcn / app semantic tokens */
+  /* Light theme — white canvas */
   --radius: 0.15rem;
-  --background: var(--lime);
+  --background: #ffffff;
   --foreground: var(--ink);
   --card: var(--paper);
   --card-foreground: var(--ink);
   --primary: var(--ink);
-  --primary-foreground: var(--paper);
+  --primary-foreground: #ffffff;
   --secondary: var(--warm);
   --secondary-foreground: var(--ink);
   --muted: var(--warm);
   --muted-foreground: var(--muted-text);
-  --accent: var(--deep-lime);
+  --accent: var(--lime);
   --accent-foreground: var(--ink);
   --destructive: #9b2c2c;
   --border: var(--ink);
   --input: var(--line);
   --ring: var(--ink);
+}
+
+.dark {
+  --background: #121410;
+  --foreground: var(--paper);
+  --card: var(--panel);
+  --card-foreground: var(--paper);
+  --primary: var(--lime);
+  --primary-foreground: var(--ink);
+  --secondary: #1c1f18;
+  --secondary-foreground: var(--paper);
+  --muted: #1c1f18;
+  --muted-foreground: var(--panel-muted);
+  --accent: var(--deep-lime);
+  --accent-foreground: var(--ink);
+  --destructive: #ef9a9a;
+  --border: var(--lime);
+  --input: #3a3f34;
+  --ring: var(--lime);
+  --ink: var(--paper);
+  --deep-lime: var(--lime);
 }
 
 * {
@@ -95,4 +118,16 @@ h3 {
 
 .font-serif {
   font-family: var(--font-family-serif);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
