@@ -7,20 +7,20 @@ type AttendanceRankingProps = {
 
 export function AttendanceRanking({ ranks }: AttendanceRankingProps) {
   return (
-    <section className="border border-border bg-card">
+    <section className="flex h-full flex-col border border-border bg-card">
       <div className="border-b border-border px-4 py-3">
         <h2 className="text-lg font-bold tracking-[-0.03em]">Ranking</h2>
-        <p className="mt-1 text-xs text-muted-foreground">
-          Top attendees by check-ins this session
+        <p className="mt-1 text-xs font-semibold tracking-[0.08em] text-muted-foreground uppercase">
+          Top 5 this session
         </p>
       </div>
 
       {ranks.length === 0 ? (
-        <p className="px-4 py-8 text-sm text-muted-foreground">
+        <p className="flex-1 px-4 py-8 text-sm text-muted-foreground">
           Rankings appear after the first scan.
         </p>
       ) : (
-        <ol className="divide-y divide-border">
+        <ol className="min-h-0 flex-1 divide-y divide-border">
           {ranks.map((rank, index) => (
             <li
               key={rank.memberId}

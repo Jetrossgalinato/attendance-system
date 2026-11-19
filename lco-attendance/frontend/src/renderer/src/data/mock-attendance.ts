@@ -96,7 +96,7 @@ export function summarizeAttendance(
 
 export function rankAttendance(
   records: AttendanceRecord[],
-  limit = 8
+  limit = 5
 ): AttendanceRank[] {
   const counts = new Map<
     string,

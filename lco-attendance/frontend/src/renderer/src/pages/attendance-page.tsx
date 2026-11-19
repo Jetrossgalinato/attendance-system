@@ -47,7 +47,7 @@ export function AttendancePage() {
   const coolingDown = now < cooldownUntil
 
   const summary = useMemo(() => summarizeAttendance(records), [records])
-  const ranks = useMemo(() => rankAttendance(records), [records])
+  const ranks = useMemo(() => rankAttendance(records, 5), [records])
 
   const handleScan = useCallback((rawId: string) => {
     if (Date.now() < cooldownUntilRef.current) {
@@ -119,7 +119,7 @@ export function AttendancePage() {
           />
         </section>
 
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+        <div className="grid items-stretch gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
           <AttendanceTable records={records} />
           <AttendanceRanking ranks={ranks} />
         </div>
