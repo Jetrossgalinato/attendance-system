@@ -32,12 +32,12 @@ export function AdminDashboardPage() {
 
       <AdminKpiCards kpis={ADMIN_KPIS} />
 
-      <div className="grid items-stretch gap-6 lg:grid-cols-2">
+      <div className="grid items-stretch gap-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
         <WeeklyAttendanceChart data={WEEKLY_ATTENDANCE} />
         <BorrowsByCollegeChart data={BORROWS_BY_COLLEGE} />
       </div>
 
-      <div className="grid items-stretch gap-6 lg:grid-cols-2">
+      <div className="grid items-stretch gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)]">
         <AttendanceStatusChart data={ATTENDANCE_STATUS} />
         <TopOrganizationsChart data={TOP_ORGANIZATIONS} />
       </div>
