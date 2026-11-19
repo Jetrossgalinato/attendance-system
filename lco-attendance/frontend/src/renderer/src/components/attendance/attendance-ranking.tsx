@@ -1,8 +1,53 @@
+import { Trophy } from "lucide-react"
+
 import type { AttendanceRank } from "@/data/mock-attendance"
 import { cn } from "@/lib/utils"
 
 type AttendanceRankingProps = {
   ranks: AttendanceRank[]
+}
+
+const podiumStyles = [
+  {
+    label: "Gold",
+    wrap: "bg-[#f5e6a8] text-[#9a7b0c]",
+    icon: "text-[#c9a227]",
+  },
+  {
+    label: "Silver",
+    wrap: "bg-[#e4e7eb] text-[#5b6570]",
+    icon: "text-[#8e98a4]",
+  },
+  {
+    label: "Bronze",
+    wrap: "bg-[#efd4c0] text-[#8a5528]",
+    icon: "text-[#b87333]",
+  },
+] as const
+
+function RankBadge({ index }: { index: number }) {
+  const podium = podiumStyles[index]
+
+  if (podium) {
+    return (
+      <span
+        className={cn(
+          "flex h-8 w-8 shrink-0 items-center justify-center",
+          podium.wrap
+        )}
+        aria-label={`${podium.label} trophy`}
+        title={podium.label}
+      >
+        <Trophy className={cn("size-4", podium.icon)} strokeWidth={2.25} />
+      </span>
+    )
+  }
+
+  return (
+    <span className="flex h-8 w-8 shrink-0 items-center justify-center bg-muted text-sm font-black text-foreground">
+      {index + 1}
+    </span>
+  )
 }
 
 export function AttendanceRanking({ ranks }: AttendanceRankingProps) {
@@ -26,16 +71,7 @@ export function AttendanceRanking({ ranks }: AttendanceRankingProps) {
               key={rank.memberId}
               className="flex items-center gap-3 px-4 py-3"
             >
-              <span
-                className={cn(
-                  "flex h-8 w-8 shrink-0 items-center justify-center text-sm font-black",
-                  index === 0
-                    ? "bg-lime text-[#181a17]"
-                    : "bg-muted text-foreground"
-                )}
-              >
-                {index + 1}
-              </span>
+              <RankBadge index={index} />
               <div className="min-w-0 flex-1">
                 <p className="truncate font-semibold">{rank.name}</p>
                 <p className="truncate text-xs text-muted-foreground">
