@@ -27,10 +27,17 @@ export type AdminActivityKind = "Attendance" | "Borrow"
 export type AdminActivityRow = {
   id: string
   time: string
+  occurredAt: string
   actor: string
   kind: AdminActivityKind
   detail: string
   status: string
+}
+
+function seedTime(hour: number, minute: number, second = 0): string {
+  const date = new Date()
+  date.setHours(hour, minute, second, 0)
+  return date.toISOString()
 }
 
 export const ADMIN_KPIS: AdminKpi[] = [
@@ -75,6 +82,7 @@ export const RECENT_ACTIVITY: AdminActivityRow[] = [
   {
     id: "act-1",
     time: "11:42 AM",
+    occurredAt: seedTime(11, 42),
     actor: "Nina Ortega",
     kind: "Borrow",
     detail: "Calculator · CMNS",
@@ -83,6 +91,7 @@ export const RECENT_ACTIVITY: AdminActivityRow[] = [
   {
     id: "act-2",
     time: "11:28 AM",
+    occurredAt: seedTime(11, 28),
     actor: "Kai Domingo",
     kind: "Borrow",
     detail: "Calculator · CCIS",
@@ -91,6 +100,7 @@ export const RECENT_ACTIVITY: AdminActivityRow[] = [
   {
     id: "act-3",
     time: "11:15 AM",
+    occurredAt: seedTime(11, 15),
     actor: "Elena Garcia",
     kind: "Borrow",
     detail: "Return · CEGS",
@@ -99,6 +109,7 @@ export const RECENT_ACTIVITY: AdminActivityRow[] = [
   {
     id: "act-4",
     time: "10:51 AM",
+    occurredAt: seedTime(10, 51),
     actor: "Hiro Tanaka",
     kind: "Attendance",
     detail: "Time In",
@@ -107,6 +118,7 @@ export const RECENT_ACTIVITY: AdminActivityRow[] = [
   {
     id: "act-5",
     time: "10:38 AM",
+    occurredAt: seedTime(10, 38),
     actor: "Marco Dela Cruz",
     kind: "Borrow",
     detail: "Calculator · CED",
@@ -115,6 +127,7 @@ export const RECENT_ACTIVITY: AdminActivityRow[] = [
   {
     id: "act-6",
     time: "10:14 AM",
+    occurredAt: seedTime(10, 14),
     actor: "Diego Cruz",
     kind: "Attendance",
     detail: "Time In",
@@ -123,6 +136,7 @@ export const RECENT_ACTIVITY: AdminActivityRow[] = [
   {
     id: "act-7",
     time: "09:48 AM",
+    occurredAt: seedTime(9, 48),
     actor: "Ana Reyes",
     kind: "Attendance",
     detail: "Time In",
@@ -131,6 +145,7 @@ export const RECENT_ACTIVITY: AdminActivityRow[] = [
   {
     id: "act-8",
     time: "09:31 AM",
+    occurredAt: seedTime(9, 31),
     actor: "Felix Ramos",
     kind: "Borrow",
     detail: "Calculator · CCIS",
@@ -139,6 +154,7 @@ export const RECENT_ACTIVITY: AdminActivityRow[] = [
   {
     id: "act-9",
     time: "09:12 AM",
+    occurredAt: seedTime(9, 12),
     actor: "Carla Mendoza",
     kind: "Attendance",
     detail: "Time In",
@@ -147,6 +163,7 @@ export const RECENT_ACTIVITY: AdminActivityRow[] = [
   {
     id: "act-10",
     time: "08:55 AM",
+    occurredAt: seedTime(8, 55),
     actor: "Jonas Lim",
     kind: "Borrow",
     detail: "Return · CEGS",
@@ -155,6 +172,7 @@ export const RECENT_ACTIVITY: AdminActivityRow[] = [
   {
     id: "act-11",
     time: "08:41 AM",
+    occurredAt: seedTime(8, 41),
     actor: "Gina Lopez",
     kind: "Attendance",
     detail: "Time In",
@@ -163,6 +181,7 @@ export const RECENT_ACTIVITY: AdminActivityRow[] = [
   {
     id: "act-12",
     time: "08:22 AM",
+    occurredAt: seedTime(8, 22),
     actor: "Lara Villanueva",
     kind: "Attendance",
     detail: "Time Out",
