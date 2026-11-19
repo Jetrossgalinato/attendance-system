@@ -1,14 +1,14 @@
-import { app, BrowserWindow, shell } from "electron"
+import { app, BrowserWindow, session, shell } from "electron"
 import { join } from "node:path"
 
 const isDev = !app.isPackaged
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
-    width: 1100,
-    height: 720,
-    minWidth: 800,
-    minHeight: 560,
+    width: 1280,
+    height: 800,
+    minWidth: 900,
+    minHeight: 640,
     show: false,
     autoHideMenuBar: true,
     webPreferences: {
@@ -36,6 +36,12 @@ function createWindow(): void {
 }
 
 app.whenReady().then(() => {
+  session.defaultSession.setPermissionRequestHandler(
+    (_webContents, permission, callback) => {
+      callback(permission === "media" || permission === "mediaKeySystem")
+    }
+  )
+
   createWindow()
 
   app.on("activate", () => {
