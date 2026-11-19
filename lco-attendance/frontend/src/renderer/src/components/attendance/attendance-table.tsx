@@ -79,8 +79,8 @@ export function AttendanceTable({ records }: AttendanceTableProps) {
       : `${(page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, filteredRecords.length)} of ${filteredRecords.length}`
 
   return (
-    <section className="flex h-full flex-col border border-border bg-card">
-      <div className="flex flex-col gap-3 border-b border-border px-4 py-3 lg:flex-row lg:items-end lg:justify-between">
+    <section className="surface-card flex h-full flex-col overflow-hidden">
+      <div className="flex flex-col gap-3 border-b border-border/80 px-5 py-4 lg:flex-row lg:items-end lg:justify-between">
         <div className="space-y-1">
           <h2 className="text-lg font-bold tracking-[-0.03em]">Live scans</h2>
           <p className="text-xs font-semibold tracking-[0.08em] text-muted-foreground uppercase">
@@ -88,7 +88,7 @@ export function AttendanceTable({ records }: AttendanceTableProps) {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-end gap-2">
+        <div className="flex flex-wrap items-end gap-2.5">
           <label className="w-fit space-y-1">
             <span className="block text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
               From
@@ -129,7 +129,7 @@ export function AttendanceTable({ records }: AttendanceTableProps) {
       </div>
 
       {filteredRecords.length === 0 ? (
-        <p className="flex-1 px-4 py-10 text-sm text-muted-foreground">
+        <p className="flex-1 px-5 py-10 text-sm text-muted-foreground">
           No scans in this date range.
         </p>
       ) : (
@@ -160,10 +160,10 @@ export function AttendanceTable({ records }: AttendanceTableProps) {
                     <TableCell>
                       <span
                         className={cn(
-                          "inline-flex border px-2 py-0.5 text-xs font-semibold tracking-wide uppercase",
+                          "inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide uppercase",
                           record.type === "Time In"
-                            ? "border-deep-lime bg-lime/30 text-foreground"
-                            : "border-border bg-muted text-foreground"
+                            ? "bg-lime/40 text-foreground"
+                            : "bg-muted text-foreground"
                         )}
                       >
                         {record.type}
@@ -172,10 +172,10 @@ export function AttendanceTable({ records }: AttendanceTableProps) {
                     <TableCell>
                       <span
                         className={cn(
-                          "inline-flex border px-2 py-0.5 text-xs font-semibold tracking-wide uppercase",
+                          "inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide uppercase",
                           record.status === "Present"
-                            ? "border-deep-lime bg-lime/30 text-foreground"
-                            : "border-destructive/40 bg-destructive/10 text-destructive"
+                            ? "bg-lime/40 text-foreground"
+                            : "bg-destructive/10 text-destructive"
                         )}
                       >
                         {record.status}
@@ -187,7 +187,7 @@ export function AttendanceTable({ records }: AttendanceTableProps) {
             </Table>
           </div>
 
-          <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-border px-4 py-3">
+          <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-border/80 px-5 py-3.5">
             <p className="text-xs text-muted-foreground">
               Page {page} of {totalPages}
             </p>

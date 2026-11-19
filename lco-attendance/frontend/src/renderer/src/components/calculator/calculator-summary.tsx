@@ -1,4 +1,5 @@
 import type { CalculatorSummary } from "@/data/mock-calculator"
+import { cn } from "@/lib/utils"
 
 type CalculatorSummaryCardsProps = {
   summary: CalculatorSummary
@@ -23,11 +24,11 @@ export function CalculatorSummaryCards({
   summary,
 }: CalculatorSummaryCardsProps) {
   return (
-    <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+    <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {cards.map((card) => (
         <article
           key={card.key}
-          className="border border-border bg-card px-4 py-4"
+          className={cn("surface-card surface-card-hover px-5 py-5")}
         >
           <p className="text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
             {card.label}

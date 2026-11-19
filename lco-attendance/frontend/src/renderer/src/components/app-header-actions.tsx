@@ -7,13 +7,13 @@ type AppHeaderActionsProps = {
 
 export function AppHeaderActions({ onChangeMode }: AppHeaderActionsProps) {
   return (
-    <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
+    <div className="flex shrink-0 flex-wrap items-center justify-end gap-2.5">
       <ModeToggle />
       <Button
         type="button"
         variant="outline"
         size="sm"
-        className="cursor-pointer rounded-none border-border"
+        className="cursor-pointer"
         onClick={onChangeMode}
       >
         Change Mode
@@ -24,7 +24,7 @@ export function AppHeaderActions({ onChangeMode }: AppHeaderActionsProps) {
         size="sm"
         disabled
         aria-disabled="true"
-        className="rounded-none border-border opacity-50"
+        className="opacity-45"
       >
         Login
       </Button>

@@ -214,8 +214,8 @@ export function QrScanner({
   }, [elementId, enabled, releaseCamera, restartKey])
 
   return (
-    <div className={cn("flex h-full min-h-0 flex-col bg-card", className)}>
-      <div className="flex items-center justify-between border-b border-border px-3 py-2">
+    <div className={cn("flex h-full min-h-0 flex-col bg-transparent", className)}>
+      <div className="flex items-center justify-between px-5 py-3">
         <p className="text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
           QR camera
         </p>
@@ -226,7 +226,7 @@ export function QrScanner({
         )}
       </div>
 
-      <div className="relative min-h-0 flex-1 overflow-hidden bg-muted">
+      <div className="relative mx-4 mb-4 min-h-0 flex-1 overflow-hidden rounded-2xl bg-muted">
         <div
           ref={hostRef}
           id={elementId}
@@ -238,7 +238,7 @@ export function QrScanner({
           </p>
         )}
         {error && (
-          <div className="absolute inset-x-0 bottom-0 space-y-2 bg-background/95 px-3 py-2">
+          <div className="absolute inset-x-0 bottom-0 space-y-2 rounded-b-2xl bg-background/95 px-3 py-2">
             <p className="text-xs font-medium text-destructive" role="alert">
               {error}
             </p>

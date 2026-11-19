@@ -33,7 +33,7 @@ function RankBadge({ index }: { index: number }) {
     return (
       <span
         className={cn(
-          "flex h-8 w-8 shrink-0 items-center justify-center",
+          "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
           podium.wrap
         )}
         aria-label={`${podium.label} trophy`}
@@ -45,7 +45,7 @@ function RankBadge({ index }: { index: number }) {
   }
 
   return (
-    <span className="flex h-8 w-8 shrink-0 items-center justify-center bg-muted text-sm font-black text-foreground">
+    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-black text-foreground">
       {index + 1}
     </span>
   )
@@ -60,21 +60,21 @@ function RankList({
 }) {
   return (
     <div>
-      <div className="border-b border-border px-4 py-2.5">
+      <div className="border-b border-border/80 px-5 py-2.5">
         <p className="text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
           {title}
         </p>
       </div>
       {ranks.length === 0 ? (
-        <p className="px-4 py-6 text-sm text-muted-foreground">
+        <p className="px-5 py-6 text-sm text-muted-foreground">
           No borrows yet.
         </p>
       ) : (
-        <ol className="divide-y divide-border">
+        <ol className="divide-y divide-border/70">
           {ranks.map((rank, index) => (
             <li
               key={rank.key}
-              className="flex items-center gap-3 px-4 py-2.5 transition-colors hover:bg-lime/55 dark:hover:bg-lime/15"
+              className="flex items-center gap-3 px-5 py-2.5 transition-colors duration-150 hover:bg-lime/25 dark:hover:bg-lime/10"
             >
               <RankBadge index={index} />
               <div className="min-w-0 flex-1">
@@ -96,8 +96,8 @@ export function CalculatorRanking({
   organizationRanks,
 }: CalculatorRankingProps) {
   return (
-    <section className="flex h-full min-h-0 flex-col overflow-hidden border border-border bg-card">
-      <div className="shrink-0 border-b border-border px-4 py-3">
+    <section className="surface-card flex h-full min-h-0 flex-col overflow-hidden">
+      <div className="shrink-0 border-b border-border/80 px-5 py-4">
         <h2 className="text-lg font-bold tracking-[-0.03em]">Ranking</h2>
         <p className="mt-1 text-xs font-semibold tracking-[0.08em] text-muted-foreground uppercase">
           Top colleges & orgs
@@ -106,7 +106,7 @@ export function CalculatorRanking({
 
       <div className="min-h-0 flex-1 overflow-y-auto">
         <RankList title="Top colleges" ranks={collegeRanks} />
-        <div className="border-t border-border" />
+        <div className="border-t border-border/80" />
         <RankList title="Top organizations" ranks={organizationRanks} />
       </div>
     </section>

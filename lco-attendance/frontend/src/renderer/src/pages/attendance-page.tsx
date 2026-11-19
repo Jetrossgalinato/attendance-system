@@ -86,9 +86,9 @@ export function AttendancePage({ onChangeMode }: AttendancePageProps) {
 
   return (
     <div className="min-h-full bg-background text-foreground">
-      <main className="mx-auto flex min-h-full max-w-7xl flex-col gap-6 px-6 py-8 md:px-8">
+      <main className="mx-auto flex min-h-full max-w-7xl flex-col gap-8 px-6 py-10 md:px-8">
         <header className="flex items-start justify-between gap-4">
-          <div className="min-w-0 space-y-2">
+          <div className="min-w-0 space-y-2.5">
             <p className="text-xs font-semibold tracking-[0.12em] text-muted-foreground uppercase">
               Session · {sessionLabel} · Live
             </p>
@@ -105,11 +105,11 @@ export function AttendancePage({ onChangeMode }: AttendancePageProps) {
 
         <AttendanceSummaryCards summary={summary} />
 
-        <section className="grid h-auto overflow-hidden border border-border bg-card md:h-[280px] md:grid-cols-[minmax(280px,380px)_minmax(0,1fr)]">
+        <section className="surface-card grid h-auto overflow-hidden md:h-[300px] md:grid-cols-[minmax(280px,380px)_minmax(0,1fr)]">
           <QrScanner
             paused={coolingDown}
             onScan={handleScan}
-            className="h-[240px] border-b border-border md:h-full md:border-r md:border-b-0"
+            className="h-[240px] border-b border-border/80 md:h-full md:border-r md:border-b-0"
           />
           <IdScanInput
             value={scanValue}
@@ -123,7 +123,7 @@ export function AttendancePage({ onChangeMode }: AttendancePageProps) {
           />
         </section>
 
-        <div className="grid items-stretch gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+        <div className="grid items-stretch gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
           <AttendanceTable records={records} />
           <AttendanceRanking ranks={ranks} />
         </div>

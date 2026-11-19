@@ -5,21 +5,21 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-none text-sm font-semibold tracking-tight transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-semibold tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-45 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground hover:bg-lime hover:text-[#181a17] dark:bg-lime dark:text-[#181a17] dark:hover:bg-paper dark:hover:text-[#181a17]",
+          "bg-primary text-primary-foreground hover:bg-lime hover:text-[#181a17] dark:bg-lime dark:text-[#181a17] dark:hover:brightness-105",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-lime hover:text-[#181a17] dark:hover:bg-paper",
+          "bg-secondary text-secondary-foreground hover:bg-lime/80 hover:text-[#181a17]",
         outline:
-          "border border-border bg-transparent text-foreground hover:bg-foreground hover:text-background",
+          "border border-border bg-card/80 text-foreground shadow-sm hover:bg-muted",
         ghost: "hover:bg-muted hover:text-foreground",
       },
       size: {
         default: "h-10 px-5 py-2",
-        sm: "h-8 px-3 text-xs",
+        sm: "h-8 px-3.5 text-xs",
         lg: "h-11 px-7",
       },
     },
