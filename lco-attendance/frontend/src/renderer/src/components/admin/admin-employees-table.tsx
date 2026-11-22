@@ -18,14 +18,19 @@ import {
   MEMBER_ORGANIZATIONS,
   type EmployeeAttendanceStats,
 } from "@/data/mock-admin-monitoring"
+import { cn } from "@/lib/utils"
 
 const PAGE_SIZE = 10
 
 type AdminEmployeesTableProps = {
   rows: EmployeeAttendanceStats[]
+  className?: string
 }
 
-export function AdminEmployeesTable({ rows }: AdminEmployeesTableProps) {
+export function AdminEmployeesTable({
+  rows,
+  className,
+}: AdminEmployeesTableProps) {
   const [search, setSearch] = useState("")
   const [college, setCollege] = useState("all")
   const [organization, setOrganization] = useState("all")
@@ -71,8 +76,10 @@ export function AdminEmployeesTable({ rows }: AdminEmployeesTableProps) {
       : `${(page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, filteredRows.length)} of ${filteredRows.length}`
 
   return (
-    <section className="surface-card flex flex-col overflow-hidden">
-      <div className="flex flex-col gap-3 border-b border-border/80 px-5 py-4 lg:flex-row lg:items-end lg:justify-between">
+    <section
+      className={cn("surface-card flex flex-col overflow-hidden", className)}
+    >
+      <div className="flex shrink-0 flex-col gap-3 border-b border-border/80 px-5 py-4 lg:flex-row lg:items-end lg:justify-between">
         <div className="space-y-1">
           <h2 className="text-lg font-bold tracking-[-0.03em]">Employees</h2>
           <p className="text-xs font-semibold tracking-[0.08em] text-muted-foreground uppercase">
@@ -130,12 +137,12 @@ export function AdminEmployeesTable({ rows }: AdminEmployeesTableProps) {
       </div>
 
       {filteredRows.length === 0 ? (
-        <p className="px-5 py-10 text-sm text-muted-foreground">
+        <p className="flex flex-1 items-center px-5 py-10 text-sm text-muted-foreground">
           No employees match these filters.
         </p>
       ) : (
         <>
-          <div className="overflow-x-auto">
+          <div className="min-h-0 flex-1 overflow-auto">
             <Table>
               <TableHeader>
                 <TableRow className="hover:bg-transparent">

@@ -56,7 +56,9 @@ export function AdminShell({
           onLogout={onLogout}
         />
         <SidebarInset className="min-h-dvh min-w-0 overflow-y-auto bg-transparent">
-          <div className="px-4 py-6 sm:px-6 md:px-8 md:py-8">{children}</div>
+          <div className="flex min-h-dvh flex-col px-4 py-6 sm:px-6 md:px-8 md:py-8">
+            {children}
+          </div>
         </SidebarInset>
       </SidebarProvider>
     </div>
