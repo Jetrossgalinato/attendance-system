@@ -1,11 +1,7 @@
 import { useMemo } from "react"
 
-import { AdminAttendanceLogTable } from "@/components/admin/admin-attendance-log-table"
 import { AdminEmployeesTable } from "@/components/admin/admin-employees-table"
-import {
-  getEmployeeAttendanceStats,
-  MONITORING_ATTENDANCE_LOG,
-} from "@/data/mock-admin-monitoring"
+import { getEmployeeAttendanceStats } from "@/data/mock-admin-monitoring"
 
 export function AdminAttendanceMonitoringPage() {
   const employees = useMemo(() => getEmployeeAttendanceStats(), [])
@@ -20,12 +16,11 @@ export function AdminAttendanceMonitoringPage() {
           Attendance Monitoring
         </h1>
         <p className="font-serif max-w-2xl text-lg text-foreground/80 italic">
-          Roster and scan history for every LCO employee.
+          Roster and attendance stats for every LCO employee.
         </p>
       </header>
 
       <AdminEmployeesTable rows={employees} />
-      <AdminAttendanceLogTable rows={MONITORING_ATTENDANCE_LOG} />
     </main>
   )
 }

@@ -1,11 +1,7 @@
 import { useMemo } from "react"
 
-import { AdminBorrowLogTable } from "@/components/admin/admin-borrow-log-table"
 import { AdminCurrentlyOutTable } from "@/components/admin/admin-currently-out-table"
-import {
-  getCurrentlyOutRows,
-  MONITORING_BORROW_LOG,
-} from "@/data/mock-admin-monitoring"
+import { getCurrentlyOutRows } from "@/data/mock-admin-monitoring"
 
 export function AdminBorrowingMonitoringPage() {
   const currentlyOut = useMemo(() => getCurrentlyOutRows(), [])
@@ -20,12 +16,11 @@ export function AdminBorrowingMonitoringPage() {
           Borrowing Monitoring
         </h1>
         <p className="font-serif max-w-2xl text-lg text-foreground/80 italic">
-          Calculator loans currently out and full borrow history.
+          Calculator loans currently out across LCO.
         </p>
       </header>
 
       <AdminCurrentlyOutTable rows={currentlyOut} />
-      <AdminBorrowLogTable rows={MONITORING_BORROW_LOG} />
     </main>
   )
 }
