@@ -1,3 +1,4 @@
+import type { AdminActivityRow } from "./mock-admin"
 import type {
   AttendanceRecord,
   AttendanceStatus,
@@ -263,6 +264,51 @@ export function formatMonitoringDateTime(iso: string): string {
     minute: "2-digit",
   })
 }
+
+function formatActivityClock(iso: string): string {
+  return new Date(iso).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  })
+}
+
+/** Full merged attendance + borrow timeline (newest first). */
+export function getActivityLogs(
+  attendanceLog: AttendanceRecord[] = MONITORING_ATTENDANCE_LOG,
+  borrowLog: CalculatorRecord[] = MONITORING_BORROW_LOG
+): AdminActivityRow[] {
+  const attendanceRows: AdminActivityRow[] = attendanceLog.map((row) => ({
+    id: `activity-att-${row.id}`,
+    time: formatActivityClock(row.scannedAt),
+    occurredAt: row.scannedAt,
+    actor: row.name,
+    memberId: row.memberId,
+    kind: "Attendance",
+    detail: row.type,
+    status: row.status,
+  }))
+
+  const borrowRows: AdminActivityRow[] = borrowLog.map((row) => ({
+    id: `activity-bor-${row.id}`,
+    time: formatActivityClock(row.scannedAt),
+    occurredAt: row.scannedAt,
+    actor: row.name,
+    memberId: row.memberId,
+    kind: "Borrow",
+    detail:
+      row.type === "Borrow"
+        ? `Calculator · ${row.college}`
+        : `Return · ${row.college}`,
+    status: row.status,
+  }))
+
+  return [...attendanceRows, ...borrowRows].sort(
+    (a, b) =>
+      new Date(b.occurredAt).getTime() - new Date(a.occurredAt).getTime()
+  )
+}
+
+export const ACTIVITY_LOGS: AdminActivityRow[] = getActivityLogs()
 
 export function formatRelativeDuration(
   iso: string,

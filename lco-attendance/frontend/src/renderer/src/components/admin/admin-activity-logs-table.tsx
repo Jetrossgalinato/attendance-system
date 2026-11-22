@@ -12,28 +12,36 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import type { AdminActivityRow } from "@/data/mock-admin"
 import {
   endOfDay,
   formatMonitoringDateTime,
   startOfDay,
   toDateInputValue,
-  type AttendanceRecord,
 } from "@/data/mock-admin-monitoring"
 import { cn } from "@/lib/utils"
 
 const PAGE_SIZE = 10
 
-type AdminAttendanceLogTableProps = {
-  rows: AttendanceRecord[]
+type AdminActivityLogsTableProps = {
+  rows: AdminActivityRow[]
 }
 
 function statusClass(status: string): string {
-  if (status === "Present") return "bg-lime/40 text-foreground"
-  if (status === "Late") return "bg-destructive/10 text-destructive"
-  return "bg-muted text-foreground"
+  switch (status) {
+    case "Present":
+    case "Out":
+      return "bg-lime/40 text-foreground"
+    case "Late":
+      return "bg-destructive/10 text-destructive"
+    case "Returned":
+      return "bg-muted text-foreground"
+    default:
+      return "bg-muted text-foreground"
+  }
 }
 
-export function AdminAttendanceLogTable({ rows }: AdminAttendanceLogTableProps) {
+export function AdminActivityLogsTable({ rows }: AdminActivityLogsTableProps) {
   const today = toDateInputValue(new Date())
   const weekAgo = toDateInputValue(
     new Date(Date.now() - 6 * 24 * 60 * 60 * 1000)
@@ -42,7 +50,7 @@ export function AdminAttendanceLogTable({ rows }: AdminAttendanceLogTableProps) 
   const [fromDate, setFromDate] = useState(weekAgo)
   const [toDate, setToDate] = useState(today)
   const [search, setSearch] = useState("")
-  const [typeFilter, setTypeFilter] = useState("all")
+  const [kindFilter, setKindFilter] = useState("all")
   const [statusFilter, setStatusFilter] = useState("all")
   const [page, setPage] = useState(1)
 
@@ -52,24 +60,25 @@ export function AdminAttendanceLogTable({ rows }: AdminAttendanceLogTableProps) 
     const query = search.trim().toLowerCase()
 
     return rows.filter((row) => {
-      const occurred = new Date(row.scannedAt).getTime()
+      const occurred = new Date(row.occurredAt).getTime()
       if (from !== null && occurred < from) return false
       if (to !== null && occurred > to) return false
-      if (typeFilter !== "all" && row.type !== typeFilter) return false
+      if (kindFilter !== "all" && row.kind !== kindFilter) return false
       if (statusFilter !== "all" && row.status !== statusFilter) return false
       if (!query) return true
       return (
-        row.name.toLowerCase().includes(query) ||
-        row.memberId.toLowerCase().includes(query)
+        row.actor.toLowerCase().includes(query) ||
+        (row.memberId?.toLowerCase().includes(query) ?? false) ||
+        row.detail.toLowerCase().includes(query)
       )
     })
-  }, [fromDate, rows, search, statusFilter, toDate, typeFilter])
+  }, [fromDate, kindFilter, rows, search, statusFilter, toDate])
 
   const totalPages = Math.max(1, Math.ceil(filteredRows.length / PAGE_SIZE))
 
   useEffect(() => {
     setPage(1)
-  }, [fromDate, toDate, search, typeFilter, statusFilter, rows.length])
+  }, [fromDate, toDate, search, kindFilter, statusFilter, rows.length])
 
   useEffect(() => {
     if (page > totalPages) setPage(totalPages)
@@ -90,9 +99,7 @@ export function AdminAttendanceLogTable({ rows }: AdminAttendanceLogTableProps) 
       <div className="flex flex-col gap-3 border-b border-border/80 px-5 py-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-1">
-            <h2 className="text-lg font-bold tracking-[-0.03em]">
-              Attendance log
-            </h2>
+            <h2 className="text-lg font-bold tracking-[-0.03em]">All activity</h2>
             <p className="text-xs font-semibold tracking-[0.08em] text-muted-foreground uppercase">
               {rangeLabel}
             </p>
@@ -152,16 +159,16 @@ export function AdminAttendanceLogTable({ rows }: AdminAttendanceLogTableProps) 
           </label>
           <label className="w-fit space-y-1">
             <span className="block text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
-              Type
+              Kind
             </span>
             <MonitoringSelect
-              value={typeFilter}
-              onChange={(event) => setTypeFilter(event.target.value)}
-              className="w-[8.5rem]"
+              value={kindFilter}
+              onChange={(event) => setKindFilter(event.target.value)}
+              className="w-[9.5rem]"
             >
               <option value="all">All</option>
-              <option value="Time In">Time In</option>
-              <option value="Time Out">Time Out</option>
+              <option value="Attendance">Attendance</option>
+              <option value="Borrow">Borrow</option>
             </MonitoringSelect>
           </label>
           <label className="w-fit space-y-1">
@@ -171,11 +178,13 @@ export function AdminAttendanceLogTable({ rows }: AdminAttendanceLogTableProps) 
             <MonitoringSelect
               value={statusFilter}
               onChange={(event) => setStatusFilter(event.target.value)}
-              className="w-[8.5rem]"
+              className="w-[9.5rem]"
             >
               <option value="all">All</option>
               <option value="Present">Present</option>
               <option value="Late">Late</option>
+              <option value="Out">Out</option>
+              <option value="Returned">Returned</option>
             </MonitoringSelect>
           </label>
         </div>
@@ -183,7 +192,7 @@ export function AdminAttendanceLogTable({ rows }: AdminAttendanceLogTableProps) 
 
       {filteredRows.length === 0 ? (
         <p className="px-5 py-10 text-sm text-muted-foreground">
-          No attendance records match these filters.
+          No activity matches these filters.
         </p>
       ) : (
         <>
@@ -193,8 +202,9 @@ export function AdminAttendanceLogTable({ rows }: AdminAttendanceLogTableProps) 
                 <TableRow className="hover:bg-transparent">
                   <TableHead>Time</TableHead>
                   <TableHead>Member ID</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Type</TableHead>
+                  <TableHead>Person</TableHead>
+                  <TableHead>Kind</TableHead>
+                  <TableHead>Detail</TableHead>
                   <TableHead>Status</TableHead>
                 </TableRow>
               </TableHeader>
@@ -202,11 +212,27 @@ export function AdminAttendanceLogTable({ rows }: AdminAttendanceLogTableProps) 
                 {pageRows.map((row) => (
                   <TableRow key={row.id}>
                     <TableCell className="font-medium tabular-nums">
-                      {formatMonitoringDateTime(row.scannedAt)}
+                      {formatMonitoringDateTime(row.occurredAt)}
                     </TableCell>
-                    <TableCell className="tabular-nums">{row.memberId}</TableCell>
-                    <TableCell className="font-semibold">{row.name}</TableCell>
-                    <TableCell>{row.type}</TableCell>
+                    <TableCell className="tabular-nums">
+                      {row.memberId ?? "—"}
+                    </TableCell>
+                    <TableCell className="font-semibold">{row.actor}</TableCell>
+                    <TableCell>
+                      <span
+                        className={cn(
+                          "surface-chip inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide uppercase",
+                          row.kind === "Attendance"
+                            ? "bg-lime/40 text-foreground"
+                            : "bg-muted text-foreground"
+                        )}
+                      >
+                        {row.kind}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {row.detail}
+                    </TableCell>
                     <TableCell>
                       <span
                         className={cn(

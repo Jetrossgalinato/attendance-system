@@ -3,6 +3,7 @@ import { useState } from "react"
 import { AdminShell } from "@/components/admin/admin-shell"
 import { AlertProvider } from "@/components/alert-provider"
 import type { AuthSession } from "@/data/mock-auth"
+import { AdminActivityLogsPage } from "@/pages/admin-activity-logs-page"
 import { AdminAttendanceMonitoringPage } from "@/pages/admin-attendance-monitoring-page"
 import { AdminBorrowingMonitoringPage } from "@/pages/admin-borrowing-monitoring-page"
 import { AdminDashboardPage } from "@/pages/admin-dashboard-page"
@@ -77,6 +78,8 @@ export default function App() {
         adminContent = <AdminAttendanceMonitoringPage />
       } else if (adminPage === "borrowing") {
         adminContent = <AdminBorrowingMonitoringPage />
+      } else if (adminPage === "activity") {
+        adminContent = <AdminActivityLogsPage />
       }
 
       content = (
