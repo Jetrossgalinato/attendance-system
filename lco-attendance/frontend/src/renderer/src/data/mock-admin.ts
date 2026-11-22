@@ -32,6 +32,7 @@ export type AdminActivityRow = {
   kind: AdminActivityKind
   detail: string
   status: string
+  memberId?: string
 }
 
 function seedTime(hour: number, minute: number, second = 0): string {

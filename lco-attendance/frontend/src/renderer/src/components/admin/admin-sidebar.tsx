@@ -3,6 +3,7 @@ import {
   ClipboardCheck,
   LayoutDashboard,
   LogOut,
+  ScrollText,
 } from "lucide-react"
 
 import { useAlert } from "@/components/alert-provider"
@@ -55,6 +56,11 @@ const NAV_ITEMS: NavItem[] = [
     id: "borrowing",
     label: "Borrowing Monitoring",
     icon: Calculator,
+  },
+  {
+    id: "activity",
+    label: "Activity Logs",
+    icon: ScrollText,
   },
 ]
 

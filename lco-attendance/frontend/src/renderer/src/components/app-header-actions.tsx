@@ -24,9 +24,9 @@ export function AppHeaderActions({
       </Button>
       <Button
         type="button"
-        variant="outline"
+        variant="default"
         size="sm"
-        className="cursor-pointer border-transparent bg-transparent shadow-none hover:bg-muted/80"
+        className="cursor-pointer shadow-[var(--shadow-1)]"
         onClick={onLoginClick}
       >
         Login

@@ -1,18 +1,14 @@
 import { useMemo } from "react"
 
-import { AdminAttendanceLogTable } from "@/components/admin/admin-attendance-log-table"
 import { AdminEmployeesTable } from "@/components/admin/admin-employees-table"
-import {
-  getEmployeeAttendanceStats,
-  MONITORING_ATTENDANCE_LOG,
-} from "@/data/mock-admin-monitoring"
+import { getEmployeeAttendanceStats } from "@/data/mock-admin-monitoring"
 
 export function AdminAttendanceMonitoringPage() {
   const employees = useMemo(() => getEmployeeAttendanceStats(), [])
 
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-2 py-4 sm:px-4 md:px-6 md:py-6">
-      <header className="space-y-2.5">
+    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-2 py-4 sm:px-4 md:px-6 md:py-6">
+      <header className="shrink-0 space-y-2.5">
         <p className="text-xs font-semibold tracking-[0.12em] text-muted-foreground uppercase">
           Admin · Attendance
         </p>
@@ -20,12 +16,11 @@ export function AdminAttendanceMonitoringPage() {
           Attendance Monitoring
         </h1>
         <p className="font-serif max-w-2xl text-lg text-foreground/80 italic">
-          Roster and scan history for every LCO employee.
+          Roster and attendance stats for every LCO employee.
         </p>
       </header>
 
-      <AdminEmployeesTable rows={employees} />
-      <AdminAttendanceLogTable rows={MONITORING_ATTENDANCE_LOG} />
+      <AdminEmployeesTable rows={employees} className="min-h-0 flex-1" />
     </main>
   )
 }
